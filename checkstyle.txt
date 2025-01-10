@@ -1,0 +1,6 @@
+Starting audit...
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\checker\Checker.java:1: File does not end with a newline. [NewlineAtEndOfFile]
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\checker\CheckerConstants.java:1: File does not end with a newline. [NewlineAtEndOfFile]
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\fileio\CommerciantInput.java:6:8: Unused import - java.util.List. [UnusedImports]
+Audit done.
+Checkstyle ends with 3 errors.

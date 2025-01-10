@@ -3,9 +3,12 @@ package org.poo.main;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import jdk.jshell.execution.Util;
 import org.poo.checker.Checker;
 import org.poo.checker.CheckerConstants;
+import org.poo.e_banking.AppLogic;
 import org.poo.fileio.ObjectInput;
+import org.poo.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -93,8 +96,14 @@ public final class Main {
          *
          */
 
+        AppLogic.setOutputObject(output);
+        AppLogic.initApp(inputData);
+        AppLogic.startSession(inputData);
+
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePath2), output);
+
+        Utils.resetRandom();
     }
 
     /**
