@@ -91,6 +91,9 @@ public final class CommandSelector {
             case "addInterest":
                 command = new AddInterestRate(users, commandInput, output);
                 break;
+            case "withdrawSavings":
+                command = new WithdrawSavings(commandInput, users, exchangeRateManager);
+                break;
             default:
                 System.out.println("Invalid command");
         }

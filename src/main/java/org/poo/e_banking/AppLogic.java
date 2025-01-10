@@ -3,6 +3,7 @@ package org.poo.e_banking;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.poo.e_banking.Helpers.CommandSelector;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
+import org.poo.entities.Commerciant;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;
 import org.poo.fileio.ObjectInput;
@@ -30,8 +31,15 @@ public final class AppLogic {
         exchangeRateManager = new ExchangeRateManager();
 
         for (var user : objectInput.getUsers()) {
-            users.add(new User(user.getFirstName(), user.getLastName(), user.getEmail()));
+            users.add(new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getBirthDate(),
+                               user.getOccupation()));
             userMap.put(user.getEmail(), users.getLast());
+        }
+
+        for (var commerciant : objectInput.getCommerciants()) {
+            for (var user : users) {
+                user.getComerciants().add(new Commerciant(commerciant));
+            }
         }
 
         for (var exchangeRate : objectInput.getExchangeRates()) {

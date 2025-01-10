@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,19 +19,34 @@ public final class User implements ToOutput {
     private String firstName;
     private String lastName;
     private String email;
+    private String birthdate;
+    private String occupation;
     private List<Account> accounts;
     private ObjectNode userNode;
     private ArrayNode transactionsNode;
     private Map<String, Account> accountMap = new HashMap<>();
+    private List<Commerciant> comerciants = new ArrayList<>();
 
-    public User(final String firstName, final String lastName, final String email) {
+    public User(final String firstName, final String lastName, final String email,
+                final String birthdate, final String occupation) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.birthdate = birthdate;
+        this.occupation = occupation;
         this.accounts = new ArrayList<>();
         this.userNode = new ObjectNode(new ObjectMapper().getNodeFactory());
         userNode.put("command", "printTransactions");
         transactionsNode = userNode.putArray("output");
+    }
+
+    public int getUserAge(final String birthdate) {
+        // For birthdate in the format "yyyy-MM-dd"
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dateOfBirth = LocalDate.parse(birthdate, formatter);
+
+        LocalDate now = LocalDate.now();
+        return Period.between(dateOfBirth, now).getYears();
     }
 
     /**
@@ -42,6 +60,12 @@ public final class User implements ToOutput {
         Account account = AccountFactory.createAccount(accountType, this.email, currency,
                 interestRate);
         if (account != null) {
+            if (this.getOccupation().equals("student")) {
+                account.setPlan("student");
+            } else {
+                account.setPlan("standard");
+            }
+
             accounts.add(account);
             accountMap.put(account.getIban(), account);
         }
@@ -62,6 +86,15 @@ public final class User implements ToOutput {
             }
         }
         return false;
+    }
+
+    public Commerciant getCommerciant(final String commerciantName) {
+        for (Commerciant commerciant : comerciants) {
+            if (commerciant.getCommerciantInput().getCommerciant().equals(commerciantName)) {
+                return commerciant;
+            }
+        }
+        return null;
     }
 
     /**

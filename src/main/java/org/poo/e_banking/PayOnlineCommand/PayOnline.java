@@ -6,6 +6,7 @@ import org.poo.e_banking.Helpers.ExchangeRateManager;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.Account;
 import org.poo.entities.Card;
+import org.poo.entities.Commerciant;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;
 
@@ -66,6 +67,9 @@ public final class PayOnline implements Executable {
             logTransactions(user, account,
                     PayOnlineOutputBuilder.insufficientFunds(commandInput.getTimestamp()));
         } else {
+            Commerciant commerciant = user.getCommerciant(commandInput.getCommerciant());
+            commerciant.getCashBack(commandInput.getAmount(), account, amountInAccountCurrency);
+
             logTransactions(user, account,
                     PayOnlineOutputBuilder.success(commandInput.getTimestamp(),
                             amountInAccountCurrency, commandInput.getCommerciant()));
