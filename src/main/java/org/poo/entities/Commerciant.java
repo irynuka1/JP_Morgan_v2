@@ -18,28 +18,28 @@ public class Commerciant {
         this.canGetCashBack = true;
     }
 
-    public void getCashBack(final double sum, final Account account, final double amountInAccountCurrency) {
+    public void getCashBack(final double sum, final Account account, User user, final double amountInAccountCurrency) {
         totalSum += sum;
         if (totalSum >= 100 && totalSum < 300) {
-            if (account.getPlan().equals("standard") || account.getPlan().equals("student")) {
+            if (user.getPlan().equals("standard") || user.getPlan().equals("student")) {
                 account.addFunds(amountInAccountCurrency * 0.001);
-            } else if (account.getPlan().equals("silver")) {
+            } else if (user.getPlan().equals("silver")) {
                 account.addFunds(amountInAccountCurrency * 0.003);
             } else {
                 account.addFunds(amountInAccountCurrency * 0.005);
             }
         } else if (totalSum >= 300 && totalSum < 500) {
-            if (account.getPlan().equals("standard") || account.getPlan().equals("student")) {
+            if (user.getPlan().equals("standard") || user.getPlan().equals("student")) {
                 account.addFunds(amountInAccountCurrency * 0.002);
-            } else if (account.getPlan().equals("silver")) {
+            } else if (user.getPlan().equals("silver")) {
                 account.addFunds(amountInAccountCurrency * 0.004);
             } else {
                 account.addFunds(amountInAccountCurrency * 0.0055);
             }
         } else if (totalSum >= 500) {
-            if (account.getPlan().equals("standard") || account.getPlan().equals("student")) {
+            if (user.getPlan().equals("standard") || user.getPlan().equals("student")) {
                 account.addFunds(amountInAccountCurrency * 0.0025);
-            } else if (account.getPlan().equals("silver")) {
+            } else if (user.getPlan().equals("silver")) {
                 account.addFunds(amountInAccountCurrency * 0.005);
             } else {
                 account.addFunds(amountInAccountCurrency * 0.007);

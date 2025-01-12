@@ -71,7 +71,7 @@ public final class PayOnline implements Executable {
             if (commerciant.getCommerciantInput().getCashbackStrategy().equals("nrOfTransactions")) {
                 commerciant.getCashBack(account, amountInAccountCurrency);
             } else {
-                commerciant.getCashBack(commandInput.getAmount(), account, amountInAccountCurrency);
+                commerciant.getCashBack(commandInput.getAmount(), account, user, amountInAccountCurrency);
             }
 
             logTransactions(user, account,

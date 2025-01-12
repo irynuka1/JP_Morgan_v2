@@ -21,6 +21,7 @@ public final class User implements ToOutput {
     private String email;
     private String birthdate;
     private String occupation;
+    private String plan;
     private List<Account> accounts;
     private ObjectNode userNode;
     private ArrayNode transactionsNode;
@@ -34,6 +35,7 @@ public final class User implements ToOutput {
         this.email = email;
         this.birthdate = birthdate;
         this.occupation = occupation;
+        this.plan = this.occupation.equals("student") ? "student" : "standard";
         this.accounts = new ArrayList<>();
         this.userNode = new ObjectNode(new ObjectMapper().getNodeFactory());
         userNode.put("command", "printTransactions");
@@ -60,12 +62,6 @@ public final class User implements ToOutput {
         Account account = AccountFactory.createAccount(accountType, this.email, currency,
                 interestRate);
         if (account != null) {
-            if (this.getOccupation().equals("student")) {
-                account.setPlan("student");
-            } else {
-                account.setPlan("standard");
-            }
-
             accounts.add(account);
             accountMap.put(account.getIban(), account);
         }

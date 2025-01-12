@@ -22,7 +22,6 @@ public class Account implements ToOutput {
     private List<Card> cards;
     private String type;
     private String alias;
-    private String plan;
     private ObjectNode accountNode;
     private ArrayNode transactionsNode;
     private Map<String, Card> cardMap = new HashMap<>();
@@ -35,7 +34,6 @@ public class Account implements ToOutput {
         this.minBalance = 0.0;
         this.cards = new ArrayList<>();
         this.alias = "";
-        this.plan = "";
         this.accountNode = new ObjectNode(new ObjectMapper().getNodeFactory());
         accountNode.put("command", "report");
         transactionsNode = accountNode.putArray("transactions");
