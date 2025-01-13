@@ -8,8 +8,8 @@ import org.poo.fileio.CommandInput;
 import java.util.Map;
 
 public final class DeleteCard extends CardBase {
-    public DeleteCard(final CommandInput commandInput, final Map<String, User> userMap) {
-        super(commandInput, userMap);
+    public DeleteCard(final CommandInput commandInput) {
+        super(commandInput);
     }
 
     /**

@@ -12,19 +12,18 @@ import java.util.ArrayList;
 
 public class WithdrawSavings implements Executable {
     private final CommandInput commandInput;
-    private final ArrayList<User> users;
-    private final ExchangeRateManager exchangeRateManager;
 
-    public WithdrawSavings(final CommandInput commandInput, final ArrayList<User> users, final ExchangeRateManager exchangeRateManager) {
+    public WithdrawSavings(final CommandInput commandInput) {
         this.commandInput = commandInput;
-        this.users = users;
-        this.exchangeRateManager = exchangeRateManager;
     }
 
     @Override
     public void execute() {
         User user = null;
         Account account = null;
+        AppLogic appLogic = AppLogic.getInstance();
+        ExchangeRateManager exchangeRateManager = appLogic.getExchangeRateManager();
+        ArrayList<User> users = appLogic.getUsers();
 
         for (User u : users) {
             if (u.getAccountByIban(commandInput.getAccount()) != null) {

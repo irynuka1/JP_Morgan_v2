@@ -12,17 +12,17 @@ import java.util.ArrayList;
 public final class PrintUsers implements Executable {
     private final CommandInput commandInput;
     private final ArrayNode output;
-    private final ArrayList<User> users;
 
-    public PrintUsers(final CommandInput commandInput, final ArrayNode output,
-                      final ArrayList<User> users) {
+    public PrintUsers(final CommandInput commandInput, final ArrayNode output) {
         this.commandInput = commandInput;
         this.output = output;
-        this.users = users;
     }
 
     @Override
     public void execute() {
+        AppLogic appLogic = AppLogic.getInstance();
+        ArrayList<User> users = appLogic.getUsers();
+
         ObjectNode usersWrapper = new ObjectNode(new ObjectMapper().getNodeFactory());
         usersWrapper.put("command", commandInput.getCommand());
 

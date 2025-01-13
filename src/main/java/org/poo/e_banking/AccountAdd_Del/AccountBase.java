@@ -2,6 +2,7 @@ package org.poo.e_banking.AccountAdd_Del;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.poo.e_banking.AppLogic;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.Account;
 import org.poo.entities.User;
@@ -11,12 +12,10 @@ import java.util.Map;
 
 public abstract class AccountBase implements Executable {
     protected final CommandInput commandInput;
-    protected final Map<String, User> userMap;
     protected final ObjectMapper objectMapper;
 
-    protected AccountBase(final CommandInput commandInput, final Map<String, User> userMap) {
+    protected AccountBase(final CommandInput commandInput) {
         this.commandInput = commandInput;
-        this.userMap = userMap;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -26,6 +25,7 @@ public abstract class AccountBase implements Executable {
      * @return the user if it exists, null otherwise
      */
     protected User getUserFromMap() {
+        Map<String, User> userMap = AppLogic.getInstance().getUserMap();
         return userMap.get(commandInput.getEmail());
     }
 

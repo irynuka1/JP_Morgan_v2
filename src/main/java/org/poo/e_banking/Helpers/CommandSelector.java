@@ -25,74 +25,68 @@ public final class CommandSelector {
      * Selects the command to be executed based on the input command.
      *
      * @param commandInput      The input.
-     * @param userMap           The map of users.
      * @param output            The output array.
-     * @param users             The list of users.
-     * @param exchangeRateManager The exchange rate manager.
      */
-    public static void selectCommand(final CommandInput commandInput,
-                                     final Map<String, User> userMap, final ArrayNode output,
-                                     final ArrayList<User> users,
-                                     final ExchangeRateManager exchangeRateManager) {
+    public static void selectCommand(final CommandInput commandInput, final ArrayNode output) {
         Executable command = null;
 
         switch (commandInput.getCommand()) {
             case "printUsers":
-                command = new PrintUsers(commandInput, output, users);
+                command = new PrintUsers(commandInput, output);
                 break;
             case "addAccount":
-                command = new AddAccount(commandInput, userMap);
+                command = new AddAccount(commandInput);
                 break;
             case "createCard":
-                command = new CreateCard(commandInput, "Normal", userMap);
+                command = new CreateCard(commandInput, "Normal");
                 break;
             case "createOneTimeCard":
-                command = new CreateCard(commandInput, "OneTime", userMap);
+                command = new CreateCard(commandInput, "OneTime");
                 break;
             case "addFunds":
-                command = new AddFunds(users, commandInput);
+                command = new AddFunds(commandInput);
                 break;
             case "deleteAccount":
-                command = new DeleteAccount(commandInput, output, userMap);
+                command = new DeleteAccount(commandInput, output);
                 break;
             case "deleteCard":
-                command = new DeleteCard(commandInput, userMap);
+                command = new DeleteCard(commandInput);
                 break;
             case "setMinimumBalance":
-                command = new SetMinBalance(users, commandInput);
+                command = new SetMinBalance(commandInput);
                 break;
             case "payOnline":
-                command = new PayOnline(commandInput, output, userMap, exchangeRateManager);
+                command = new PayOnline(commandInput, output);
                 break;
             case "sendMoney":
-                command = new SendMoney(commandInput, users, exchangeRateManager);
+                command = new SendMoney(commandInput);
                 break;
             case "printTransactions":
-                command = new PrintTransactions(commandInput, output, userMap);
+                command = new PrintTransactions(commandInput, output);
                 break;
             case "setAlias":
-                command = new SetAlias(commandInput, userMap);
+                command = new SetAlias(commandInput);
                 break;
             case "checkCardStatus":
-                command = new CheckCardStatus(commandInput, users, output);
+                command = new CheckCardStatus(commandInput, output);
                 break;
             case "changeInterestRate":
-                command = new ChangeInterestRate(users, commandInput, output);
+                command = new ChangeInterestRate(commandInput, output);
                 break;
             case "splitPayment":
-                command = new SplitPayment(commandInput, users, userMap, exchangeRateManager);
+                command = new SplitPayment(commandInput);
                 break;
             case "report":
-                command = new Report(commandInput, users, output);
+                command = new Report(commandInput, output);
                 break;
             case "spendingsReport":
-                command = new SpendingsReport(commandInput, users, output);
+                command = new SpendingsReport(commandInput, output);
                 break;
             case "addInterest":
-                command = new AddInterestRate(users, commandInput, output);
+                command = new AddInterestRate(commandInput, output);
                 break;
             case "withdrawSavings":
-                command = new WithdrawSavings(commandInput, users, exchangeRateManager);
+                command = new WithdrawSavings(commandInput);
                 break;
             default:
                 System.out.println("Invalid command");

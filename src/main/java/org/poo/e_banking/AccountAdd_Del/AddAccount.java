@@ -9,8 +9,8 @@ import java.util.Map;
 
 public final class AddAccount extends AccountBase {
 
-    public AddAccount(final CommandInput commandInput, final Map<String, User> userMap) {
-        super(commandInput, userMap);
+    public AddAccount(final CommandInput commandInput) {
+        super(commandInput);
     }
 
     private ObjectNode toJson() {

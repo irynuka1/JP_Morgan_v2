@@ -9,15 +9,14 @@ import java.util.Map;
 
 public final class SetAlias implements Executable {
     private final CommandInput commandInput;
-    private final Map<String, User> userMap;
 
-    public SetAlias(final CommandInput commandInput, final Map<String, User> userMap) {
+    public SetAlias(final CommandInput commandInput) {
         this.commandInput = commandInput;
-        this.userMap = userMap;
     }
 
     @Override
     public void execute() {
+        Map<String, User> userMap = AppLogic.getInstance().getUserMap();
         User user = userMap.get(commandInput.getEmail());
 
         if (user != null) {

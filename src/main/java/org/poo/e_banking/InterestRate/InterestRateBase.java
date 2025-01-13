@@ -3,6 +3,7 @@ package org.poo.e_banking.InterestRate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.poo.e_banking.AppLogic;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.Account;
 import org.poo.entities.SavingsAccount;
@@ -12,14 +13,11 @@ import org.poo.fileio.CommandInput;
 import java.util.ArrayList;
 
 public abstract class InterestRateBase implements Executable {
-    protected final ArrayList<User> users;
     protected final CommandInput commandInput;
     protected final ArrayNode output;
     protected final ObjectMapper mapper = new ObjectMapper();
 
-    public InterestRateBase(final ArrayList<User> users, final CommandInput commandInput,
-                            final ArrayNode output) {
-        this.users = users;
+    public InterestRateBase(final CommandInput commandInput, final ArrayNode output) {
         this.commandInput = commandInput;
         this.output = output;
     }
@@ -29,6 +27,8 @@ public abstract class InterestRateBase implements Executable {
      */
     @Override
     public void execute() {
+        ArrayList<User> users = AppLogic.getInstance().getUsers();
+
         for (User user : users) {
             Account account = user.getAccountByIban(commandInput.getAccount());
             if (account != null) {

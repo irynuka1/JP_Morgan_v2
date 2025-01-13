@@ -9,9 +9,8 @@ import java.util.Map;
 public final class CreateCard extends CardBase {
     private final String cardType;
 
-    public CreateCard(final CommandInput commandInput, final String cardType,
-                      final Map<String, User> userMap) {
-        super(commandInput, userMap);
+    public CreateCard(final CommandInput commandInput, final String cardType) {
+        super(commandInput);
         this.cardType = cardType;
     }
 

@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public final class Report extends BaseReport {
-    public Report(final CommandInput commandInput, final ArrayList<User> users,
-                  final ArrayNode output) {
-        super(commandInput, users, output);
+    public Report(final CommandInput commandInput, final ArrayNode output) {
+        super(commandInput, output);
     }
 
     @Override

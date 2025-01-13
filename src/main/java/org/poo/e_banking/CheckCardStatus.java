@@ -13,19 +13,18 @@ import java.util.ArrayList;
 
 public final class CheckCardStatus implements Executable {
     private final CommandInput commandInput;
-    private final ArrayList<User> users;
     private final ArrayNode output;
 
-    public CheckCardStatus(final CommandInput commandInput, final ArrayList<User> users,
-                           final ArrayNode output) {
+    public CheckCardStatus(final CommandInput commandInput, final ArrayNode output) {
         this.commandInput = commandInput;
-        this.users = users;
         this.output = output;
     }
 
     @Override
     public void execute() {
-        User user = getUserByCardNumber(commandInput.getCardNumber());
+        ArrayList<User> users = AppLogic.getInstance().getUsers();
+
+        User user = getUserByCardNumber(users, commandInput.getCardNumber());
         if (user == null) {
             errorOutput();
             return;
@@ -48,7 +47,7 @@ public final class CheckCardStatus implements Executable {
      * @param cardNumber the card number
      * @return the user that has the card with the given card number or null
      */
-    public User getUserByCardNumber(final String cardNumber) {
+    public User getUserByCardNumber(final ArrayList<User> users, final String cardNumber) {
         for (User user : users) {
             Card card = user.getCardByNumber(cardNumber);
             if (card != null) {

@@ -11,9 +11,8 @@ import java.util.Map;
 public final class DeleteAccount extends AccountBase {
     private final ArrayNode output;
 
-    public DeleteAccount(final CommandInput commandInput, final ArrayNode output,
-                         final Map<String, User> userMap) {
-        super(commandInput, userMap);
+    public DeleteAccount(final CommandInput commandInput, final ArrayNode output) {
+        super(commandInput);
         this.output = output;
     }
 

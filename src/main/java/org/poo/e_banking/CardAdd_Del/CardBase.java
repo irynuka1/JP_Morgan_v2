@@ -2,6 +2,7 @@ package org.poo.e_banking.CardAdd_Del;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.poo.e_banking.AppLogic;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;
@@ -10,11 +11,9 @@ import java.util.Map;
 
 public abstract class CardBase implements Executable {
     protected final CommandInput commandInput;
-    protected final Map<String, User> userMap;
 
-    public CardBase(final CommandInput commandInput, final Map<String, User> userMap) {
+    public CardBase(final CommandInput commandInput) {
         this.commandInput = commandInput;
-        this.userMap = userMap;
     }
 
     /**
@@ -42,7 +41,9 @@ public abstract class CardBase implements Executable {
      */
     @Override
     public void execute() {
-        User user = userMap.get(commandInput.getEmail());
+        AppLogic appLogic = AppLogic.getInstance();
+        User user = appLogic.getUserMap().get(commandInput.getEmail());
+
         if (user == null) {
             return;
         }

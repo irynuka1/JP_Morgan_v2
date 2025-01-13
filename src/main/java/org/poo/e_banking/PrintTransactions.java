@@ -12,17 +12,15 @@ import java.util.Map;
 public final class PrintTransactions implements Executable {
     private final CommandInput commandInput;
     private final ArrayNode output;
-    private final Map<String, User> userMap;
 
-    public PrintTransactions(final CommandInput commandInput, final ArrayNode output,
-                             final Map<String, User> userMap) {
+    public PrintTransactions(final CommandInput commandInput, final ArrayNode output) {
         this.commandInput = commandInput;
         this.output = output;
-        this.userMap = userMap;
     }
 
     @Override
     public void execute() {
+        Map<String, User> userMap = AppLogic.getInstance().getUserMap();
         User user = userMap.get(commandInput.getEmail());
 
         if (user != null) {

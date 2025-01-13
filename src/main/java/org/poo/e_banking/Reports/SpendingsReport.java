@@ -13,9 +13,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public final class SpendingsReport extends BaseReport {
-    public SpendingsReport(final CommandInput commandInput, final ArrayList<User> users,
-                           final ArrayNode output) {
-        super(commandInput, users, output);
+    public SpendingsReport(final CommandInput commandInput, final ArrayNode output) {
+        super(commandInput, output);
     }
 
     @Override

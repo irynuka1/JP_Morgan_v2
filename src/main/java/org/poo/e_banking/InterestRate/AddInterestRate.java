@@ -8,9 +8,9 @@ import org.poo.fileio.CommandInput;
 import java.util.ArrayList;
 
 public class AddInterestRate extends InterestRateBase {
-    public AddInterestRate(final ArrayList<User> users, final CommandInput commandInput,
+    public AddInterestRate(final CommandInput commandInput,
                            final ArrayNode output) {
-        super(users, commandInput, output);
+        super(commandInput, output);
     }
 
     /**

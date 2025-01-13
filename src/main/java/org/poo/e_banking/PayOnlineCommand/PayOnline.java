@@ -2,6 +2,7 @@ package org.poo.e_banking.PayOnlineCommand;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.poo.e_banking.AppLogic;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.Account;
@@ -15,20 +16,17 @@ import java.util.Map;
 public final class PayOnline implements Executable {
     private final CommandInput commandInput;
     private final ArrayNode output;
-    private final Map<String, User> userMap;
-    private final ExchangeRateManager exchangeRateManager;
 
-    public PayOnline(final CommandInput commandInput, final ArrayNode output,
-                     final Map<String, User> userMap,
-                     final ExchangeRateManager exchangeRateManager) {
+    public PayOnline(final CommandInput commandInput, final ArrayNode output) {
         this.commandInput = commandInput;
         this.output = output;
-        this.userMap = userMap;
-        this.exchangeRateManager = exchangeRateManager;
     }
 
     @Override
     public void execute() {
+        AppLogic appLogic = AppLogic.getInstance();
+
+        Map<String, User> userMap = appLogic.getUserMap();
         User user = userMap.get(commandInput.getEmail());
 
         if (user == null) {
@@ -36,7 +34,7 @@ public final class PayOnline implements Executable {
         }
 
         Card card = user.getCardByNumber(commandInput.getCardNumber());
-        processTransaction(card, user);
+        processTransaction(card, user, appLogic.getExchangeRateManager());
     }
 
     /**
@@ -44,7 +42,7 @@ public final class PayOnline implements Executable {
      * @param card the card used for the transaction
      * @param user the user that made the transaction
      */
-    public void processTransaction(final Card card, final User user) {
+    public void processTransaction(final Card card, final User user, final ExchangeRateManager exchangeRateManager) {
         if (card == null) {
             PayOnlineOutputBuilder.cardNotFound(output,
                     commandInput.getCommand(),

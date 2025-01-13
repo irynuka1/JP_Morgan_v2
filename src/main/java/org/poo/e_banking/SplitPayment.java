@@ -15,30 +15,27 @@ import java.util.Map;
 
 public final class SplitPayment implements Executable {
     private final CommandInput commandInput;
-    private final ArrayList<User> users;
-    private final Map<String, User> userMap;
-    private final ExchangeRateManager exchangeManager;
 
-    public SplitPayment(final CommandInput commandInput, final ArrayList<User> users,
-                        final Map<String, User> userMap,
-                        final ExchangeRateManager exchangeRateManager) {
+    public SplitPayment(final CommandInput commandInput) {
         this.commandInput = commandInput;
-        this.users = users;
-        this.userMap = userMap;
-        this.exchangeManager = exchangeRateManager;
     }
 
     @Override
     public void execute() {
+        AppLogic appLogic = AppLogic.getInstance();
+        Map<String, User> userMap = appLogic.getUserMap();
+        ArrayList<User> users = appLogic.getUsers();
+        ExchangeRateManager exchangeManager = appLogic.getExchangeRateManager();
+
         int numberOfParticipants = commandInput.getAccounts().size();
         double amountPerParticipant = commandInput.getAmount() / numberOfParticipants;
-        List<Account> accounts = getParticipatingAccounts();
-        Account insufficientFundsAcc = checkAccountsBalance(accounts, amountPerParticipant);
+        List<Account> accounts = getParticipatingAccounts(users);
+        Account insufficientFundsAcc = checkAccountsBalance(accounts, amountPerParticipant, exchangeManager);
 
         if (insufficientFundsAcc == null) {
-            processSuccessfulPayment(accounts, amountPerParticipant);
+            processSuccessfulPayment(accounts, amountPerParticipant, exchangeManager, userMap);
         } else {
-            processFailedPayment(accounts, amountPerParticipant, insufficientFundsAcc);
+            processFailedPayment(accounts, amountPerParticipant, insufficientFundsAcc, userMap);
         }
     }
 
@@ -46,7 +43,7 @@ public final class SplitPayment implements Executable {
      * Gets the accounts involved in the split payment.
      * @return The accounts involved in the split payment.
      */
-    public List<Account> getParticipatingAccounts() {
+    public List<Account> getParticipatingAccounts(final ArrayList<User> users) {
         List<Account> accounts = new ArrayList<>();
 
         for (String iban : commandInput.getAccounts()) {
@@ -70,7 +67,8 @@ public final class SplitPayment implements Executable {
      * enough funds.
      */
     public Account checkAccountsBalance(final List<Account> accounts,
-                                        final double amountPerParticipant) {
+                                        final double amountPerParticipant,
+                                        final ExchangeRateManager exchangeManager) {
         Account insufficientFundsAcc = null;
         for (Account account : accounts) {
             double exchangeRate = exchangeManager.getExchangeRate(commandInput.getCurrency(),
@@ -91,7 +89,9 @@ public final class SplitPayment implements Executable {
      * @param amountPerParticipant The amount each participant was supposed to pay.
      */
     private void processSuccessfulPayment(final List<Account> accounts,
-                                          final double amountPerParticipant) {
+                                          final double amountPerParticipant,
+                                          final ExchangeRateManager exchangeManager,
+                                          final Map<String, User> userMap) {
         for (Account account : accounts) {
             User user = userMap.get(account.getUserEmail());
             double exchangeRate = exchangeManager.getExchangeRate(commandInput.getCurrency(),
@@ -111,7 +111,8 @@ public final class SplitPayment implements Executable {
      */
     private void processFailedPayment(final List<Account> accounts,
                                       final double amountPerParticipant,
-                                      final Account insufficientFundsAcc) {
+                                      final Account insufficientFundsAcc,
+                                      final Map<String, User> userMap) {
         for (Account account : accounts) {
             User user = userMap.get(account.getUserEmail());
             user.getTransactionsNode().add(failedOutput(amountPerParticipant,

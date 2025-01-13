@@ -11,19 +11,18 @@ import org.poo.fileio.CommandInput;
 import java.util.ArrayList;
 
 public final class SendMoney implements Executable {
-    private final ArrayList<User> users;
     private final CommandInput commandInput;
-    private final ExchangeRateManager exchangeManager;
 
-    public SendMoney(final CommandInput commandInput, final ArrayList<User> users,
-                     final ExchangeRateManager exchangeRateManager) {
+    public SendMoney(final CommandInput commandInput) {
         this.commandInput = commandInput;
-        this.users = users;
-        this.exchangeManager = exchangeRateManager;
     }
 
     @Override
     public void execute() {
+        AppLogic appLogic = AppLogic.getInstance();
+        ArrayList<User> users = appLogic.getUsers();
+        ExchangeRateManager exchangeManager = appLogic.getExchangeRateManager();
+
         Account senderAccount = null;
         Account receiverAccount = null;
         User sender = null;
@@ -47,7 +46,7 @@ public final class SendMoney implements Executable {
             }
         }
 
-        processTransaction(senderAccount, receiverAccount, sender, receiver);
+        processTransaction(senderAccount, receiverAccount, sender, receiver, exchangeManager);
     }
 
     /**
@@ -58,7 +57,8 @@ public final class SendMoney implements Executable {
      * @param receiver The user that receives the money.
      */
     public void processTransaction(final Account senderAccount, final Account receiverAccount,
-                                   final User sender, final User receiver) {
+                                   final User sender, final User receiver,
+                                   final ExchangeRateManager exchangeManager) {
         if (senderAccount == null || receiverAccount == null) {
             return;
         }
