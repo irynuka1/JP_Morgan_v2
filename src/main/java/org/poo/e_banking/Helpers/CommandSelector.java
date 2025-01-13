@@ -88,6 +88,9 @@ public final class CommandSelector {
             case "withdrawSavings":
                 command = new WithdrawSavings(commandInput);
                 break;
+            case "upgradePlan":
+                command = new UpgradePlan(commandInput);
+                break;
             default:
                 System.out.println("Invalid command");
         }

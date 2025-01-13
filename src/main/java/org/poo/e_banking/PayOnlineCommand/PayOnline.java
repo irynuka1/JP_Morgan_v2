@@ -3,6 +3,7 @@ package org.poo.e_banking.PayOnlineCommand;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.e_banking.AppLogic;
+import org.poo.e_banking.Helpers.Comission;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.Account;
@@ -60,6 +61,9 @@ public final class PayOnline implements Executable {
         double exchangeRate = exchangeRateManager.getExchangeRate(commandInput.getCurrency(),
                 account.getCurrency());
         double amountInAccountCurrency = commandInput.getAmount() * exchangeRate;
+//        double exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
+//        double amountInRON = commandInput.getAmount() * exchangeToRON;
+//        double commission = Comission.getComission(user, amountInRON);
 
         if (!account.payByCard(card, amountInAccountCurrency)) {
             logTransactions(user, account,
@@ -69,7 +73,9 @@ public final class PayOnline implements Executable {
             if (commerciant.getCommerciantInput().getCashbackStrategy().equals("nrOfTransactions")) {
                 commerciant.getCashBack(account, amountInAccountCurrency);
             } else {
-                commerciant.getCashBack(commandInput.getAmount(), account, user, amountInAccountCurrency);
+                double exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
+                double amountInRON = commandInput.getAmount() * exchangeToRON;
+                commerciant.getCashBack(amountInRON, account, user, amountInAccountCurrency);
             }
 
             logTransactions(user, account,

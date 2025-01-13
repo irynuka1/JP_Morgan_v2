@@ -18,12 +18,14 @@ public final class AppLogic {
     private static ArrayList<User> users;
     private static ArrayNode output;
     private static Map<String, User> userMap;
+    private static Map<String, Integer> planTaxMap;
     private static ExchangeRateManager exchangeRateManager;
 
     private AppLogic() {
         this.users = new ArrayList<>();
         this.userMap = new HashMap<>();
         this.exchangeRateManager = new ExchangeRateManager();
+        this.planTaxMap = new HashMap<>();
     }
 
     public static AppLogic getInstance() {
@@ -45,6 +47,7 @@ public final class AppLogic {
     public void initApp(final ObjectInput objectInput) {
         users.clear();
         userMap.clear();
+        planTaxMap.clear();
 
         for (var user : objectInput.getUsers()) {
             users.add(new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getBirthDate(),
@@ -62,6 +65,12 @@ public final class AppLogic {
             exchangeRateManager.addExchangeRate(exchangeRate.getFrom(), exchangeRate.getTo(),
                                                 exchangeRate.getRate());
         }
+
+        planTaxMap.put("standard -> silver", 100);
+        planTaxMap.put("student -> silver", 100);
+        planTaxMap.put("silver -> gold", 250);
+        planTaxMap.put("standard -> gold", 350);
+        planTaxMap.put("student -> gold", 350);
     }
 
     /**
@@ -103,5 +112,13 @@ public final class AppLogic {
 
     public ExchangeRateManager getExchangeRateManager() {
         return exchangeRateManager;
+    }
+
+    public Map<String, Integer> getPlanTaxMap() {
+        return planTaxMap;
+    }
+
+    public static void resetInstance() {
+        instance = null;
     }
 }

@@ -87,6 +87,7 @@ public final class Main {
         objectWriter.writeValue(new File(filePath2), output);
 
         Utils.resetRandom();
+        AppLogic.resetInstance();
     }
 
     /**

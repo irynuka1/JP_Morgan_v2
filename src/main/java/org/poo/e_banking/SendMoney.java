@@ -2,9 +2,11 @@ package org.poo.e_banking;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.poo.e_banking.Helpers.Comission;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.Account;
+import org.poo.entities.Commerciant;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;
 
@@ -63,7 +65,11 @@ public final class SendMoney implements Executable {
             return;
         }
 
-        if (senderAccount.withdrawFunds(commandInput.getAmount())) {
+        double exchangeToRON = exchangeManager.getExchangeRate(senderAccount.getCurrency(), "RON");
+        double amountInRON = commandInput.getAmount() * exchangeToRON;
+        double commission = Comission.getComission(sender, amountInRON);
+
+        if (senderAccount.withdrawFunds(commandInput.getAmount() + commandInput.getAmount() * commission)) {
             double exchangeRate = exchangeManager.getExchangeRate(senderAccount.getCurrency(),
                     receiverAccount.getCurrency());
             double amountInReceiverCurrency = commandInput.getAmount() * exchangeRate;
