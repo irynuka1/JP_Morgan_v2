@@ -91,6 +91,9 @@ public final class CommandSelector {
             case "upgradePlan":
                 command = new UpgradePlan(commandInput);
                 break;
+            case "cashWithdrawal":
+                command = new CashWithdrawal(commandInput, output);
+                break;
             default:
                 System.out.println("Invalid command");
         }

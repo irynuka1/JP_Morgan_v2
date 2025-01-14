@@ -61,11 +61,11 @@ public final class PayOnline implements Executable {
         double exchangeRate = exchangeRateManager.getExchangeRate(commandInput.getCurrency(),
                 account.getCurrency());
         double amountInAccountCurrency = commandInput.getAmount() * exchangeRate;
-//        double exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
-//        double amountInRON = commandInput.getAmount() * exchangeToRON;
-//        double commission = Comission.getComission(user, amountInRON);
+        double exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
+        double amountInRON = commandInput.getAmount() * exchangeToRON;
+        double commission = Comission.getComission(user, amountInRON);
 
-        if (!account.payByCard(card, amountInAccountCurrency)) {
+        if (!account.payByCard(card, amountInAccountCurrency + amountInAccountCurrency * commission)) {
             logTransactions(user, account,
                     PayOnlineOutputBuilder.insufficientFunds(commandInput.getTimestamp()));
         } else {
@@ -73,8 +73,8 @@ public final class PayOnline implements Executable {
             if (commerciant.getCommerciantInput().getCashbackStrategy().equals("nrOfTransactions")) {
                 commerciant.getCashBack(account, amountInAccountCurrency);
             } else {
-                double exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
-                double amountInRON = commandInput.getAmount() * exchangeToRON;
+                exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
+                amountInRON = commandInput.getAmount() * exchangeToRON;
                 commerciant.getCashBack(amountInRON, account, user, amountInAccountCurrency);
             }
 
