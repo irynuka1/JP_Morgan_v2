@@ -22,7 +22,7 @@ public final class AddAccount extends AccountBase {
     @Override
     public void execute() {
         User user = getUserFromMap();
-        if (user == null) {
+        if (user == null || commandInput.getAccountType().equals("business")) {
             return;
         }
 

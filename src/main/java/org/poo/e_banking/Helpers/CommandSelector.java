@@ -95,7 +95,7 @@ public final class CommandSelector {
                 command = new CashWithdrawal(commandInput, output);
                 break;
             default:
-                System.out.println("Invalid command");
+                System.out.println("Invalid command " + commandInput.getCommand());
         }
 
         if (command != null) {

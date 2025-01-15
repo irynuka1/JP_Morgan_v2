@@ -23,7 +23,8 @@ public final class UpgradePlan implements Executable {
         AppLogic appLogic = AppLogic.getInstance();
         Map<String, Integer> planTaxMap = appLogic.getPlanTaxMap();
         ArrayList<User> users = appLogic.getUsers();
-        ExchangeRateManager exchangeRateManager = appLogic.getExchangeRateManager();
+        ExchangeRateManager exchangeManager = appLogic.getExchangeRateManager();
+
         User user = null;
         Account account = null;
 
@@ -38,21 +39,40 @@ public final class UpgradePlan implements Executable {
         if (user != null) {
             String key = user.getPlan() + " -> " + commandInput.getNewPlanType();
             if (planTaxMap.containsKey(key)) {
-                double exchangeRate = exchangeRateManager.getExchangeRate("RON", account.getCurrency());
+                double exchangeRate = exchangeManager.getExchangeRate("RON",
+                        account.getCurrency());
                 double amountInAccountCurrency = planTaxMap.get(key) * exchangeRate;
 
                 if (account.withdrawFunds(amountInAccountCurrency)) {
                     user.setPlan(commandInput.getNewPlanType());
-                    ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
-                    outputNode.put("description", "Upgrade plan");
-                    outputNode.put("accountIBAN", account.getIban());
-                    outputNode.put("newPlanType", commandInput.getNewPlanType());
-                    outputNode.put("timestamp", commandInput.getTimestamp());
-
-                    user.getTransactionsNode().add(outputNode);
-                    account.getTransactionsNode().add(outputNode);
+                    logTransaction(user, account, successOutput());
                 }
             }
         }
+    }
+
+    /**
+     * Creates the output node for a successful transaction
+     * @return the output node
+     */
+    public ObjectNode successOutput() {
+        ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+        outputNode.put("description", "Upgrade plan");
+        outputNode.put("accountIBAN", commandInput.getAccount());
+        outputNode.put("newPlanType", commandInput.getNewPlanType());
+        outputNode.put("timestamp", commandInput.getTimestamp());
+        return outputNode;
+    }
+
+    /**
+     * Logs a transaction in the user and account transaction nodes
+     * @param user the user
+     * @param account the account
+     * @param outputNode the output node
+     */
+    public void logTransaction(final User user, final Account account,
+                               final ObjectNode outputNode) {
+        user.getTransactionsNode().add(outputNode);
+        account.getTransactionsNode().add(outputNode);
     }
 }

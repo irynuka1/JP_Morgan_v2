@@ -155,6 +155,13 @@
   } ],
   "timestamp" : 41
 }, {
+  "command" : "cashWithdrawal",
+  "output" : {
+    "description" : "Card not found",
+    "timestamp" : 42
+  },
+  "timestamp" : 42
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 3,

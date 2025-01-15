@@ -21,6 +21,9 @@
     "receiverIBAN" : "RO69POOB6209498372540635",
     "amount" : "101.0 RON",
     "transferType" : "sent"
+  }, {
+    "description" : "Insufficient funds",
+    "timestamp" : 8
   } ],
   "timestamp" : 9
 }, {
@@ -36,7 +39,7 @@
     "email" : "Aurica_Dinu@outlook.ro",
     "accounts" : [ {
       "IBAN" : "RO58POOB7344468893732422",
-      "balance" : 732.802,
+      "balance" : 676.688,
       "currency" : "RON",
       "type" : "classic",
       "cards" : [ {
@@ -57,6 +60,13 @@
     } ]
   } ],
   "timestamp" : 11
+}, {
+  "command" : "cashWithdrawal",
+  "output" : {
+    "description" : "Card not found",
+    "timestamp" : 15
+  },
+  "timestamp" : 15
 }, {
   "command" : "printTransactions",
   "output" : [ {
@@ -107,7 +117,7 @@
     "email" : "Aurica_Dinu@outlook.ro",
     "accounts" : [ {
       "IBAN" : "RO58POOB7344468893732422",
-      "balance" : 915.802,
+      "balance" : 687.344,
       "currency" : "RON",
       "type" : "classic",
       "cards" : [ {

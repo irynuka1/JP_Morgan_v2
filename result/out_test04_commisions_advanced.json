@@ -142,6 +142,13 @@
   } ],
   "timestamp" : 39
 }, {
+  "command" : "sendMoney",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 41
+  },
+  "timestamp" : 41
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 37,
@@ -152,6 +159,10 @@
     "card" : "8207906978464446",
     "cardHolder" : "Dennis_Norris@yahoo.us",
     "account" : "RO76POOB4035116042454483"
+  }, {
+    "description" : "Cash withdrawal of 100000.0",
+    "timestamp" : 43,
+    "amount" : 100000.0
   } ],
   "timestamp" : 44
 }, {
@@ -256,7 +267,7 @@
     "email" : "Dennis_Norris@yahoo.us",
     "accounts" : [ {
       "IBAN" : "RO76POOB4035116042454483",
-      "balance" : 100846.0,
+      "balance" : 79374.57142857143,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ {
@@ -314,11 +325,6 @@
     "amount" : 18.0,
     "commerciant" : "Nike"
   }, {
-    "timestamp" : 50,
-    "description" : "Card payment",
-    "amount" : 0.0,
-    "commerciant" : "H&M"
-  }, {
     "timestamp" : 51,
     "description" : "Visit to a local healthcare clinic",
     "senderIBAN" : "RO37POOB7013767509830666",
@@ -327,6 +333,13 @@
     "transferType" : "sent"
   } ],
   "timestamp" : 52
+}, {
+  "command" : "sendMoney",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 57
+  },
+  "timestamp" : 57
 }, {
   "command" : "printTransactions",
   "output" : [ {
@@ -344,11 +357,6 @@
     "amount" : 18.0,
     "commerciant" : "Nike"
   }, {
-    "timestamp" : 50,
-    "description" : "Card payment",
-    "amount" : 0.0,
-    "commerciant" : "H&M"
-  }, {
     "timestamp" : 51,
     "description" : "Visit to a local healthcare clinic",
     "senderIBAN" : "RO37POOB7013767509830666",
@@ -356,10 +364,19 @@
     "amount" : "3.0 USD",
     "transferType" : "sent"
   }, {
+    "description" : "Upgrade plan",
+    "accountIBAN" : "RO37POOB7013767509830666",
+    "newPlanType" : "silver",
+    "timestamp" : 54
+  }, {
     "timestamp" : 56,
     "description" : "Card payment",
     "amount" : 244.0,
     "commerciant" : "Samsung"
+  }, {
+    "description" : "Cash withdrawal of 600.0",
+    "timestamp" : 59,
+    "amount" : 600.0
   } ],
   "timestamp" : 60
 }, {
@@ -391,7 +408,7 @@
     "email" : "Brandi_Schultz@outlook.us",
     "accounts" : [ {
       "IBAN" : "RO37POOB7013767509830666",
-      "balance" : 2068.0,
+      "balance" : 1917.6274285714285,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ {
@@ -473,7 +490,7 @@
     "email" : "Dennis_Norris@yahoo.us",
     "accounts" : [ {
       "IBAN" : "RO76POOB4035116042454483",
-      "balance" : 100849.0,
+      "balance" : 79377.57142857143,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ {
@@ -515,6 +532,13 @@
   } ],
   "timestamp" : 61
 }, {
+  "command" : "sendMoney",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 65
+  },
+  "timestamp" : 65
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 1,
@@ -525,6 +549,15 @@
     "card" : "7004757825892043",
     "cardHolder" : "Jason_Carpenter@hotmail.us",
     "account" : "RO58POOB7344468893732422"
+  }, {
+    "description" : "Upgrade plan",
+    "accountIBAN" : "RO58POOB7344468893732422",
+    "newPlanType" : "gold",
+    "timestamp" : 64
+  }, {
+    "description" : "Cash withdrawal of 600.0",
+    "timestamp" : 67,
+    "amount" : 600.0
   } ],
   "timestamp" : 68
 }, {
@@ -556,7 +589,7 @@
     "email" : "Brandi_Schultz@outlook.us",
     "accounts" : [ {
       "IBAN" : "RO37POOB7013767509830666",
-      "balance" : 2068.0,
+      "balance" : 1917.6274285714285,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ {
@@ -601,7 +634,7 @@
     "email" : "Jason_Carpenter@hotmail.us",
     "accounts" : [ {
       "IBAN" : "RO58POOB7344468893732422",
-      "balance" : 2977.0,
+      "balance" : 2773.4285714285716,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ {
@@ -641,7 +674,7 @@
     "email" : "Dennis_Norris@yahoo.us",
     "accounts" : [ {
       "IBAN" : "RO76POOB4035116042454483",
-      "balance" : 100849.0,
+      "balance" : 79377.57142857143,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ {

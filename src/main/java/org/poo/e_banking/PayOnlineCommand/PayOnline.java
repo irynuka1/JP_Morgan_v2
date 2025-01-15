@@ -29,13 +29,14 @@ public final class PayOnline implements Executable {
 
         Map<String, User> userMap = appLogic.getUserMap();
         User user = userMap.get(commandInput.getEmail());
+        ExchangeRateManager exchangeRateManager = appLogic.getExchangeRateManager();
 
         if (user == null || commandInput.getAmount() == 0) {
             return;
         }
 
         Card card = user.getCardByNumber(commandInput.getCardNumber());
-        processTransaction(card, user, appLogic.getExchangeRateManager());
+        processTransaction(card, user, exchangeRateManager);
     }
 
     /**
@@ -69,14 +70,7 @@ public final class PayOnline implements Executable {
             logTransactions(user, account,
                     PayOnlineOutputBuilder.insufficientFunds(commandInput.getTimestamp()));
         } else {
-            Commerciant commerciant = user.getCommerciant(commandInput.getCommerciant());
-            if (commerciant.getCommerciantInput().getCashbackStrategy().equals("nrOfTransactions")) {
-                commerciant.getCashBack(account, amountInAccountCurrency);
-            } else {
-                exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
-                amountInRON = commandInput.getAmount() * exchangeToRON;
-                commerciant.getCashBack(amountInRON, account, user, amountInAccountCurrency);
-            }
+            applyCashback(account, user, amountInAccountCurrency, exchangeRateManager);
 
             logTransactions(user, account,
                     PayOnlineOutputBuilder.success(commandInput.getTimestamp(),
@@ -91,6 +85,19 @@ public final class PayOnline implements Executable {
                         PayOnlineOutputBuilder.createCard(account, card, user,
                                 commandInput.getTimestamp()));
             }
+        }
+    }
+
+    public void applyCashback(final Account account, final User user,
+                              final double amountInAccountCurrency, final ExchangeRateManager exchangeRateManager) {
+        Commerciant commerciant = user.getCommerciant(commandInput.getCommerciant());
+
+        if (commerciant.getCommerciantInput().getCashbackStrategy().equals("nrOfTransactions")) {
+            commerciant.getCashBack(account, amountInAccountCurrency);
+        } else {
+            double exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
+            double amountInRON = commandInput.getAmount() * exchangeToRON;
+            commerciant.getCashBack(amountInRON, account, user, amountInAccountCurrency);
         }
     }
 

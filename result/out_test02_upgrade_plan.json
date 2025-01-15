@@ -60,7 +60,7 @@
     "email" : "Chad_Robinson@hotmail.us",
     "accounts" : [ {
       "IBAN" : "RO58POOB7344468893732422",
-      "balance" : 125.0,
+      "balance" : 102.77777777777777,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ ]
@@ -124,6 +124,11 @@
     "timestamp" : 2,
     "description" : "New account created"
   }, {
+    "description" : "Upgrade plan",
+    "accountIBAN" : "RO58POOB7344468893732422",
+    "newPlanType" : "silver",
+    "timestamp" : 4
+  }, {
     "timestamp" : 8,
     "description" : "Miscellaneous online expenses",
     "senderIBAN" : "RO58POOB7344468893732422",
@@ -140,7 +145,7 @@
     "email" : "Chad_Robinson@hotmail.us",
     "accounts" : [ {
       "IBAN" : "RO58POOB7344468893732422",
-      "balance" : 593.0,
+      "balance" : 515.1002222222222,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ ]
@@ -204,19 +209,29 @@
     "timestamp" : 2,
     "description" : "New account created"
   }, {
+    "description" : "Upgrade plan",
+    "accountIBAN" : "RO58POOB7344468893732422",
+    "newPlanType" : "silver",
+    "timestamp" : 4
+  }, {
     "timestamp" : 8,
     "description" : "Miscellaneous online expenses",
     "senderIBAN" : "RO58POOB7344468893732422",
     "receiverIBAN" : "RO69POOB6209498372540635",
     "amount" : "122.0 USD",
     "transferType" : "sent"
+  }, {
+    "description" : "Upgrade plan",
+    "accountIBAN" : "RO58POOB7344468893732422",
+    "newPlanType" : "gold",
+    "timestamp" : 11
   } ],
   "timestamp" : 13
 }, {
   "command" : "deleteAccount",
   "output" : {
     "timestamp" : 15,
-    "success" : "Account deleted"
+    "error" : "Account couldn't be deleted - see org.poo.transactions for details"
   },
   "timestamp" : 15
 }, {
@@ -225,7 +240,13 @@
     "firstName" : "Chad",
     "lastName" : "Robinson",
     "email" : "Chad_Robinson@hotmail.us",
-    "accounts" : [ ]
+    "accounts" : [ {
+      "IBAN" : "RO58POOB7344468893732422",
+      "balance" : 515.1002222222222,
+      "currency" : "USD",
+      "type" : "classic",
+      "cards" : [ ]
+    } ]
   }, {
     "firstName" : "Madeleine",
     "lastName" : "De Oliveira",
@@ -272,7 +293,7 @@
     "email" : "John_Fowler@gmail.us",
     "accounts" : [ {
       "IBAN" : "RO69POOB6209498372540635",
-      "balance" : 715.0,
+      "balance" : 122.0,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ ]
@@ -284,13 +305,18 @@
   "output" : [ {
     "timestamp" : 17,
     "description" : "New account created"
+  }, {
+    "description" : "Upgrade plan",
+    "accountIBAN" : "RO90POOB5450777208072365",
+    "newPlanType" : "silver",
+    "timestamp" : 19
   } ],
   "timestamp" : 20
 }, {
   "command" : "deleteAccount",
   "output" : {
     "timestamp" : 21,
-    "error" : "Account couldn't be deleted - see org.poo.transactions for details"
+    "success" : "Account deleted"
   },
   "timestamp" : 21
 }, {
@@ -299,7 +325,13 @@
     "firstName" : "Chad",
     "lastName" : "Robinson",
     "email" : "Chad_Robinson@hotmail.us",
-    "accounts" : [ ]
+    "accounts" : [ {
+      "IBAN" : "RO58POOB7344468893732422",
+      "balance" : 515.1002222222222,
+      "currency" : "USD",
+      "type" : "classic",
+      "cards" : [ ]
+    } ]
   }, {
     "firstName" : "Madeleine",
     "lastName" : "De Oliveira",
@@ -339,20 +371,14 @@
     "firstName" : "Timothee",
     "lastName" : "Le Jacquet",
     "email" : "Timothee_Le_Jacquet@outlook.fr",
-    "accounts" : [ {
-      "IBAN" : "RO90POOB5450777208072365",
-      "balance" : 20.0,
-      "currency" : "EUR",
-      "type" : "classic",
-      "cards" : [ ]
-    } ]
+    "accounts" : [ ]
   }, {
     "firstName" : "John",
     "lastName" : "Fowler",
     "email" : "John_Fowler@gmail.us",
     "accounts" : [ {
       "IBAN" : "RO69POOB6209498372540635",
-      "balance" : 715.0,
+      "balance" : 122.0,
       "currency" : "USD",
       "type" : "classic",
       "cards" : [ ]
