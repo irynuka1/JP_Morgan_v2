@@ -59,7 +59,7 @@ public final class CommandSelector {
                 command = new PayOnline(commandInput, output);
                 break;
             case "sendMoney":
-                command = new SendMoney(commandInput);
+                command = new SendMoney(commandInput, output);
                 break;
             case "printTransactions":
                 command = new PrintTransactions(commandInput, output);

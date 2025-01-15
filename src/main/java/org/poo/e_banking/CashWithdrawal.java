@@ -27,24 +27,13 @@ public class CashWithdrawal implements Executable {
         ExchangeRateManager exchangeRateManager = appLogic.getExchangeRateManager();
 
         if (user == null) {
-            ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
-            outputNode.put("description", "User not found");
-            outputNode.put("timestamp", commandInput.getTimestamp());
-            output.add(outputNode);
+            noUserOutput();
             return;
         }
 
         Card card = user.getCardByNumber(commandInput.getCardNumber());
         if (card == null) {
-            ObjectNode wrapper = new ObjectNode(new ObjectMapper().getNodeFactory());
-            wrapper.put("command", "cashWithdrawal");
-
-            ObjectNode outputNode = wrapper.putObject("output");
-            outputNode.put("description", "Card not found");
-            outputNode.put("timestamp", commandInput.getTimestamp());
-
-            wrapper.put("timestamp", commandInput.getTimestamp());
-            output.add(wrapper);
+            noCardOutput();
             return;
         }
 
@@ -66,22 +55,45 @@ public class CashWithdrawal implements Executable {
             outputNode.put("description", "Insufficient funds");
             outputNode.put("timestamp", commandInput.getTimestamp());
             user.getTransactionsNode().add(outputNode);
+            account.getTransactionsNode().add(outputNode);
             return;
         }
 
         double exchangeRate = exchangeRateManager.getExchangeRate("RON", account.getCurrency());
-        double amountInAccountCurrency = commandInput.getAmount() * exchangeRate;
-        commission = Comission.getComission(user, amountInAccountCurrency);
-        if (account.payByCard(card, amountInAccountCurrency + amountInAccountCurrency * commission)) {
+        double amountInAccountCurrency = (commandInput.getAmount() + commandInput.getAmount() * commission) * exchangeRate;
+        if (account.withdrawCash(amountInAccountCurrency)) {
             ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+            outputNode.put("amount", commandInput.getAmount());
             outputNode.put("description", "Cash withdrawal of " + commandInput.getAmount());
             outputNode.put("timestamp", commandInput.getTimestamp());
             user.getTransactionsNode().add(outputNode);
+            account.getTransactionsNode().add(outputNode);
+            return;
         }
 
         ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
         outputNode.put("description", "Cannot perform payment due to a minimum balance being set");
         outputNode.put("timestamp", commandInput.getTimestamp());
         user.getTransactionsNode().add(outputNode);
+        account.getTransactionsNode().add(outputNode);
+    }
+
+    public void noUserOutput() {
+        ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+        outputNode.put("description", "User not found");
+        outputNode.put("timestamp", commandInput.getTimestamp());
+        output.add(outputNode);
+    }
+
+    public void noCardOutput() {
+        ObjectNode wrapper = new ObjectNode(new ObjectMapper().getNodeFactory());
+        wrapper.put("command", "cashWithdrawal");
+
+        ObjectNode outputNode = wrapper.putObject("output");
+        outputNode.put("description", "Card not found");
+        outputNode.put("timestamp", commandInput.getTimestamp());
+
+        wrapper.put("timestamp", commandInput.getTimestamp());
+        output.add(wrapper);
     }
 }

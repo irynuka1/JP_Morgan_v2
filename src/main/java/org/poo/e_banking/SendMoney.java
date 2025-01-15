@@ -1,6 +1,7 @@
 package org.poo.e_banking;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.e_banking.Helpers.Comission;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
@@ -14,9 +15,11 @@ import java.util.ArrayList;
 
 public final class SendMoney implements Executable {
     private final CommandInput commandInput;
+    private final ArrayNode output;
 
-    public SendMoney(final CommandInput commandInput) {
+    public SendMoney(final CommandInput commandInput, final ArrayNode output) {
         this.commandInput = commandInput;
+        this.output = output;
     }
 
     @Override
@@ -61,6 +64,17 @@ public final class SendMoney implements Executable {
     public void processTransaction(final Account senderAccount, final Account receiverAccount,
                                    final User sender, final User receiver,
                                    final ExchangeRateManager exchangeManager) {
+        if (sender == null || receiver == null) {
+            ObjectNode wrapper = new ObjectNode(new ObjectMapper().getNodeFactory());
+            wrapper.put("command", commandInput.getCommand());
+            ObjectNode outputNode = wrapper.putObject("output");
+            outputNode.put("description", "User not found");
+            outputNode.put("timestamp", commandInput.getTimestamp());
+            wrapper.put("timestamp", commandInput.getTimestamp());
+            output.add(wrapper);
+            return;
+        }
+
         if (senderAccount == null || receiverAccount == null) {
             return;
         }

@@ -68,6 +68,14 @@ public class Account implements ToOutput {
         this.balance += amount;
     }
 
+    public boolean withdrawCash(final double amount) {
+        if (this.balance - this.minBalance >= amount) {
+            this.balance -= amount;
+            return true;
+        }
+        return false;
+    }
+
     /**
      * This method is used to withdraw funds from the account.
      * @param amount The amount to withdraw.

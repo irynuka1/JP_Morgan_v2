@@ -30,7 +30,7 @@ public final class PayOnline implements Executable {
         Map<String, User> userMap = appLogic.getUserMap();
         User user = userMap.get(commandInput.getEmail());
 
-        if (user == null) {
+        if (user == null || commandInput.getAmount() == 0) {
             return;
         }
 
