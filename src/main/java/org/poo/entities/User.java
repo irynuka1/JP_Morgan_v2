@@ -22,11 +22,6 @@ public final class User implements ToOutput {
     private String birthdate;
     private String occupation;
     private String plan;
-    private int nrOfTransactions;
-    private double totalSum;
-    private boolean canGetFoodCashBack;
-    private boolean canGetClothesCashBack;
-    private boolean canGetTechCashBack;
     private List<Account> accounts;
     private ObjectNode userNode;
     private ArrayNode transactionsNode;
@@ -40,11 +35,6 @@ public final class User implements ToOutput {
         this.email = email;
         this.birthdate = birthdate;
         this.occupation = occupation;
-        this.nrOfTransactions = 0;
-        this.totalSum = 0.0;
-        this.canGetFoodCashBack = true;
-        this.canGetClothesCashBack = true;
-        this.canGetTechCashBack = true;
         this.plan = this.occupation.equals("student") ? "student" : "standard";
         this.accounts = new ArrayList<>();
         this.userNode = new ObjectNode(new ObjectMapper().getNodeFactory());

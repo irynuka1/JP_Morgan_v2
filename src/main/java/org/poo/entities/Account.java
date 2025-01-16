@@ -19,6 +19,10 @@ public class Account implements ToOutput {
     private String currency;
     private String userEmail;
     private double minBalance;
+    private double totalSum;
+    private boolean canGetFoodCashBack;
+    private boolean canGetClothesCashBack;
+    private boolean canGetTechCashBack;
     private List<Card> cards;
     private String type;
     private String alias;
@@ -32,6 +36,10 @@ public class Account implements ToOutput {
         this.currency = currency;
         this.userEmail = userEmail;
         this.minBalance = 0.0;
+        this.totalSum = 0.0;
+        this.canGetFoodCashBack = true;
+        this.canGetClothesCashBack = true;
+        this.canGetTechCashBack = true;
         this.cards = new ArrayList<>();
         this.alias = "";
         this.accountNode = new ObjectNode(new ObjectMapper().getNodeFactory());

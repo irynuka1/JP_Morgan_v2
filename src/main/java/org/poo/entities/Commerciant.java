@@ -7,19 +7,21 @@ import org.poo.fileio.CommerciantInput;
 @Getter@Setter
 public class Commerciant {
     private final CommerciantInput commerciantInput;
+    private int nrOfTransactions;
 
     public Commerciant(final CommerciantInput commerciant) {
         this.commerciantInput = commerciant;
+        this.nrOfTransactions = 0;
     }
 
     public String getCashbackStrategy() {
         return commerciantInput.getCashbackStrategy();
     }
 
-    public void getCashBack(final double sum, final Account account, User user,
+    public void getCashBack(final double sum, final Account account, final User user,
                             final double amountInAccountCurrency) {
-        user.setTotalSum(user.getTotalSum() + sum);
-        double cashBackRate = calculateCashBackRate(user.getPlan(), user.getTotalSum());
+        account.setTotalSum(account.getTotalSum() + sum);
+        double cashBackRate = calculateCashBackRate(user.getPlan(), account.getTotalSum());
         account.addFunds(amountInAccountCurrency * cashBackRate);
     }
 
@@ -27,19 +29,19 @@ public class Commerciant {
         if (totalSum >= 500) {
             return switch (plan) {
                 case "silver" -> 0.005;
-                case "gold", "premium" -> 0.007;
+                case "gold" -> 0.007;
                 default -> 0.0025;
             };
         } else if (totalSum >= 300) {
             return switch (plan) {
                 case "silver" -> 0.004;
-                case "gold", "premium" -> 0.0055;
+                case "gold" -> 0.0055;
                 default -> 0.002;
             };
         } else if (totalSum >= 100) {
             return switch (plan) {
                 case "silver" -> 0.003;
-                case "gold", "premium" -> 0.005;
+                case "gold" -> 0.005;
                 default -> 0.001;
             };
         }
@@ -47,22 +49,22 @@ public class Commerciant {
         return 0;
     }
 
-    public void getCashBack(final User user, final Account account, final double amountInAccountCurrency) {
-        if (isEligibleForCashBack("Food", 2, user.isCanGetFoodCashBack(), user.getNrOfTransactions())) {
+    public void getCashBack(final Account account, final double amountInAccountCurrency) {
+        if (isEligibleForCashBack("Food", 2, account.isCanGetFoodCashBack())) {
             applyCashBack(account, amountInAccountCurrency, 0.02);
-            user.setCanGetFoodCashBack(false);
-        } else if (isEligibleForCashBack("Clothes", 5, user.isCanGetClothesCashBack(), user.getNrOfTransactions())) {
+            account.setCanGetFoodCashBack(false);
+        } else if (isEligibleForCashBack("Clothes", 5, account.isCanGetClothesCashBack())) {
             applyCashBack(account, amountInAccountCurrency, 0.05);
-            user.setCanGetClothesCashBack(false);
-        } else if (isEligibleForCashBack("Tech", 10, user.isCanGetTechCashBack(), user.getNrOfTransactions())) {
+            account.setCanGetClothesCashBack(false);
+        } else if (isEligibleForCashBack("Tech", 10, account.isCanGetTechCashBack())) {
             applyCashBack(account, amountInAccountCurrency, 0.1);
-            user.setCanGetTechCashBack(false);
+            account.setCanGetTechCashBack(false);
         }
 
-        user.setNrOfTransactions(user.getNrOfTransactions() + 1);
+        nrOfTransactions++;
     }
 
-    private boolean isEligibleForCashBack(String type, int requiredTransactions, boolean canGetCashBack, int nrOfTransactions) {
+    private boolean isEligibleForCashBack(String type, int requiredTransactions, boolean canGetCashBack) {
         return nrOfTransactions == requiredTransactions && commerciantInput.getType().equals(type) && canGetCashBack;
     }
 

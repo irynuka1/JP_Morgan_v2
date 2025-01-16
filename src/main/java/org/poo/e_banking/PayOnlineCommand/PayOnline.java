@@ -93,7 +93,7 @@ public final class PayOnline implements Executable {
         Commerciant commerciant = user.getCommerciant(commandInput.getCommerciant());
 
         if (commerciant.getCashbackStrategy().equals("nrOfTransactions")) {
-            commerciant.getCashBack(user, account, amountInAccountCurrency);
+            commerciant.getCashBack(account, amountInAccountCurrency);
         } else {
             double exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
             double amountInRON = commandInput.getAmount() * exchangeToRON;
