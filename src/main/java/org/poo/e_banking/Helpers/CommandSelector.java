@@ -74,8 +74,10 @@ public final class CommandSelector {
                 command = new ChangeInterestRate(commandInput, output);
                 break;
             case "splitPayment":
-                command = new SplitPayment(commandInput);
-                break;
+                if (commandInput.getSplitPaymentType().equals("equal")) {
+                    command = new SplitPayment(commandInput);
+                    break;
+                }
             case "report":
                 command = new Report(commandInput, output);
                 break;

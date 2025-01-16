@@ -7,25 +7,19 @@ import org.poo.fileio.CommerciantInput;
 @Getter@Setter
 public class Commerciant {
     private final CommerciantInput commerciantInput;
-    private int nrOfTransactions;
-    private double totalSum;
-    private boolean canGetFoodCashBack;
-    private boolean canGetClothesCashBack;
-    private boolean canGetTechCashBack;
 
     public Commerciant(final CommerciantInput commerciant) {
         this.commerciantInput = commerciant;
-        this.nrOfTransactions = 0;
-        this.totalSum = 0.0;
-        this.canGetFoodCashBack = true;
-        this.canGetClothesCashBack = true;
-        this.canGetTechCashBack = true;
+    }
+
+    public String getCashbackStrategy() {
+        return commerciantInput.getCashbackStrategy();
     }
 
     public void getCashBack(final double sum, final Account account, User user,
                             final double amountInAccountCurrency) {
-        totalSum += sum;
-        double cashBackRate = calculateCashBackRate(user.getPlan(), totalSum);
+        user.setTotalSum(user.getTotalSum() + sum);
+        double cashBackRate = calculateCashBackRate(user.getPlan(), user.getTotalSum());
         account.addFunds(amountInAccountCurrency * cashBackRate);
     }
 
@@ -53,21 +47,22 @@ public class Commerciant {
         return 0;
     }
 
-    public void getCashBack(final Account account, final double amountInAccountCurrency) {
-        if (isEligibleForCashBack("Food", 2, canGetFoodCashBack)) {
+    public void getCashBack(final User user, final Account account, final double amountInAccountCurrency) {
+        if (isEligibleForCashBack("Food", 2, user.isCanGetFoodCashBack(), user.getNrOfTransactions())) {
             applyCashBack(account, amountInAccountCurrency, 0.02);
-            canGetFoodCashBack = false;
-        } else if (isEligibleForCashBack("Clothes", 5, canGetClothesCashBack)) {
+            user.setCanGetFoodCashBack(false);
+        } else if (isEligibleForCashBack("Clothes", 5, user.isCanGetClothesCashBack(), user.getNrOfTransactions())) {
             applyCashBack(account, amountInAccountCurrency, 0.05);
-            canGetClothesCashBack = false;
-        } else if (isEligibleForCashBack("Tech", 10, canGetTechCashBack)) {
+            user.setCanGetClothesCashBack(false);
+        } else if (isEligibleForCashBack("Tech", 10, user.isCanGetTechCashBack(), user.getNrOfTransactions())) {
             applyCashBack(account, amountInAccountCurrency, 0.1);
-            canGetTechCashBack = false;
+            user.setCanGetTechCashBack(false);
         }
-        nrOfTransactions++;
+
+        user.setNrOfTransactions(user.getNrOfTransactions() + 1);
     }
 
-    private boolean isEligibleForCashBack(String type, int requiredTransactions, boolean canGetCashBack) {
+    private boolean isEligibleForCashBack(String type, int requiredTransactions, boolean canGetCashBack, int nrOfTransactions) {
         return nrOfTransactions == requiredTransactions && commerciantInput.getType().equals(type) && canGetCashBack;
     }
 

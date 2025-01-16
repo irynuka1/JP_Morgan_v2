@@ -1527,6 +1527,13 @@
   } ],
   "timestamp" : 610
 }, {
+  "command" : "splitPayment",
+  "output" : {
+    "timestamp" : 619,
+    "description" : "Account not found"
+  },
+  "timestamp" : 619
+}, {
   "command" : "deleteAccount",
   "output" : {
     "timestamp" : 764,
@@ -2300,6 +2307,13 @@
     "timestamp" : 838
   },
   "timestamp" : 838
+}, {
+  "command" : "splitPayment",
+  "output" : {
+    "timestamp" : 841,
+    "description" : "Account not found"
+  },
+  "timestamp" : 841
 }, {
   "command" : "spendingsReport",
   "output" : {

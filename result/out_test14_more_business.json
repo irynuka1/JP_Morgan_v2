@@ -173,6 +173,13 @@
   },
   "timestamp" : 210
 }, {
+  "command" : "splitPayment",
+  "output" : {
+    "timestamp" : 384,
+    "description" : "Account not found"
+  },
+  "timestamp" : 384
+}, {
   "command" : "sendMoney",
   "output" : {
     "description" : "User not found",
