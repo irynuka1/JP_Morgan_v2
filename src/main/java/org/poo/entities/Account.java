@@ -29,6 +29,7 @@ public class Account implements ToOutput {
     private ObjectNode accountNode;
     private ArrayNode transactionsNode;
     private Map<String, Card> cardMap = new HashMap<>();
+    private List<Commerciant> comerciants = new ArrayList<>();
 
     public Account(final String userEmail, final String currency) {
         this.iban = Utils.generateIBAN();
@@ -66,6 +67,15 @@ public class Account implements ToOutput {
             cards.remove(cardMap.get(cardNumber));
             cardMap.remove(cardNumber);
         }
+    }
+
+    public Commerciant getCommerciant(final String commerciantName) {
+        for (Commerciant commerciant : comerciants) {
+            if (commerciant.getCommerciantInput().getCommerciant().equals(commerciantName)) {
+                return commerciant;
+            }
+        }
+        return null;
     }
 
     /**

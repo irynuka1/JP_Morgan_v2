@@ -18,10 +18,10 @@ public class Commerciant {
         return commerciantInput.getCashbackStrategy();
     }
 
-    public void getCashBack(final double sum, final Account account, final User user,
+    public void getCashBack(final double sum, final Account account, final String plan,
                             final double amountInAccountCurrency) {
         account.setTotalSum(account.getTotalSum() + sum);
-        double cashBackRate = calculateCashBackRate(user.getPlan(), account.getTotalSum());
+        double cashBackRate = calculateCashBackRate(plan, account.getTotalSum());
         account.addFunds(amountInAccountCurrency * cashBackRate);
     }
 
@@ -53,14 +53,18 @@ public class Commerciant {
         if (isEligibleForCashBack("Food", 2, account.isCanGetFoodCashBack())) {
             applyCashBack(account, amountInAccountCurrency, 0.02);
             account.setCanGetFoodCashBack(false);
+//            System.out.println("DA");
         } else if (isEligibleForCashBack("Clothes", 5, account.isCanGetClothesCashBack())) {
             applyCashBack(account, amountInAccountCurrency, 0.05);
             account.setCanGetClothesCashBack(false);
+//            System.out.println("DA");
         } else if (isEligibleForCashBack("Tech", 10, account.isCanGetTechCashBack())) {
             applyCashBack(account, amountInAccountCurrency, 0.1);
             account.setCanGetTechCashBack(false);
+//            System.out.println("DA");
         }
 
+//        System.out.println("NU");
         nrOfTransactions++;
     }
 

@@ -6,11 +6,10 @@ import org.poo.e_banking.Helpers.ExchangeRateManager;
 import org.poo.entities.Commerciant;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;
+import org.poo.fileio.CommerciantInput;
 import org.poo.fileio.ObjectInput;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class AppLogic {
     private static AppLogic instance = null;
@@ -20,12 +19,14 @@ public final class AppLogic {
     private static Map<String, User> userMap;
     private static Map<String, Integer> planTaxMap;
     private static ExchangeRateManager exchangeRateManager;
+    private static List<CommerciantInput> commerciants;
 
     private AppLogic() {
         this.users = new ArrayList<>();
         this.userMap = new HashMap<>();
         this.exchangeRateManager = new ExchangeRateManager();
         this.planTaxMap = new HashMap<>();
+        this.commerciants = new ArrayList<>();
     }
 
     public static AppLogic getInstance() {
@@ -55,11 +56,13 @@ public final class AppLogic {
             userMap.put(user.getEmail(), users.getLast());
         }
 
-        for (var commerciant : objectInput.getCommerciants()) {
-            for (var user : users) {
-                user.getComerciants().add(new Commerciant(commerciant));
-            }
-        }
+//        for (var commerciant : objectInput.getCommerciants()) {
+//            for (var user : users) {
+//                user.getComerciants().add(new Commerciant(commerciant));
+//            }
+//        }
+
+        commerciants.addAll(Arrays.asList(objectInput.getCommerciants()));
 
         for (var exchangeRate : objectInput.getExchangeRates()) {
             exchangeRateManager.addExchangeRate(exchangeRate.getFrom(), exchangeRate.getTo(),
@@ -116,6 +119,10 @@ public final class AppLogic {
 
     public Map<String, Integer> getPlanTaxMap() {
         return planTaxMap;
+    }
+
+    public List<CommerciantInput> getCommerciants() {
+        return commerciants;
     }
 
     public static void resetInstance() {

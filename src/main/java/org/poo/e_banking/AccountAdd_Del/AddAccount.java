@@ -1,10 +1,14 @@
 package org.poo.e_banking.AccountAdd_Del;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.poo.e_banking.AppLogic;
 import org.poo.entities.Account;
+import org.poo.entities.Commerciant;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;
+import org.poo.fileio.CommerciantInput;
 
+import java.util.List;
 import java.util.Map;
 
 public final class AddAccount extends AccountBase {
@@ -30,7 +34,13 @@ public final class AddAccount extends AccountBase {
                 commandInput.getCurrency(),
                 commandInput.getInterestRate());
 
+        AppLogic appLogic = AppLogic.getInstance();
+        List<CommerciantInput> commerciants = appLogic.getCommerciants();
         Account account = user.getAccounts().getLast();
+
+        for (CommerciantInput commerciant : commerciants) {
+            account.getComerciants().add(new Commerciant(commerciant));
+        }
 
         ObjectNode transactionNode = toJson();
         logTransaction(user, account, transactionNode);

@@ -12,6 +12,7 @@ import org.poo.entities.Commerciant;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;
 
+import java.sql.SQLOutput;
 import java.util.Map;
 
 public final class PayOnline implements Executable {
@@ -90,15 +91,26 @@ public final class PayOnline implements Executable {
 
     public void applyCashback(final Account account, final User user,
                               final double amountInAccountCurrency, final ExchangeRateManager exchangeRateManager) {
-        Commerciant commerciant = user.getCommerciant(commandInput.getCommerciant());
+        Commerciant commerciant = account.getCommerciant(commandInput.getCommerciant());
 
         if (commerciant.getCashbackStrategy().equals("nrOfTransactions")) {
             commerciant.getCashBack(account, amountInAccountCurrency);
         } else {
             double exchangeToRON = exchangeRateManager.getExchangeRate(commandInput.getCurrency(), "RON");
             double amountInRON = commandInput.getAmount() * exchangeToRON;
-            commerciant.getCashBack(amountInRON, account, user, amountInAccountCurrency);
+            commerciant.getCashBack(amountInRON, account, user.getPlan(), amountInAccountCurrency);
         }
+//
+//        System.out.println(account.getUserEmail());
+//        System.out.println(account.getIban());
+//        for (Commerciant comm : account.getComerciants()) {
+//            if (comm.getCashbackStrategy().equals("nrOfTransactions")) {
+//                System.out.println(comm.getCommerciantInput().getCommerciant() + " - " + comm.getNrOfTransactions());
+//            }
+//        }
+//
+//        System.out.println(account.getTotalSum() + " - " + commerciant.getCommerciantInput().getCommerciant());
+//        System.out.println();
     }
 
     /**
