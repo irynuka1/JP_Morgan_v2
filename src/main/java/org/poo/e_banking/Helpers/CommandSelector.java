@@ -1,21 +1,19 @@
 package org.poo.e_banking.Helpers;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.poo.e_banking.AccountAdd_Del.AddAccount;
-import org.poo.e_banking.AccountAdd_Del.DeleteAccount;
-import org.poo.e_banking.*;
-import org.poo.e_banking.CardAdd_Del.CreateCard;
-import org.poo.e_banking.CardAdd_Del.DeleteCard;
-import org.poo.e_banking.InterestRate.AddInterestRate;
-import org.poo.e_banking.InterestRate.ChangeInterestRate;
-import org.poo.e_banking.PayOnlineCommand.PayOnline;
-import org.poo.e_banking.Reports.Report;
-import org.poo.e_banking.Reports.SpendingsReport;
-import org.poo.entities.User;
+import org.poo.e_banking.Comands.*;
+import org.poo.e_banking.Comands.AccountAdd_Del.AddAccount;
+import org.poo.e_banking.Comands.AccountAdd_Del.DeleteAccount;
+import org.poo.e_banking.Comands.CardAdd_Del.CreateCard;
+import org.poo.e_banking.Comands.CardAdd_Del.DeleteCard;
+import org.poo.e_banking.Comands.InterestRate.AddInterestRate;
+import org.poo.e_banking.Comands.InterestRate.ChangeInterestRate;
+import org.poo.e_banking.Comands.PayOnlineCommand.PayOnline;
+import org.poo.e_banking.Comands.Reports.Report;
+import org.poo.e_banking.Comands.Reports.SpendingsReport;
+import org.poo.e_banking.Comands.SplitPayment.VerifCustomSplit;
+import org.poo.e_banking.Comands.SplitPayment.VerifyEqualSplit;
 import org.poo.fileio.CommandInput;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 public final class CommandSelector {
     private CommandSelector() {
@@ -75,7 +73,7 @@ public final class CommandSelector {
                 break;
             case "splitPayment":
                 if (commandInput.getSplitPaymentType().equals("equal")) {
-                    command = new VerifySplit(commandInput, output);
+                    command = new VerifyEqualSplit(commandInput, output);
                 } else {
                     command = new VerifCustomSplit(commandInput, output);
                 }
