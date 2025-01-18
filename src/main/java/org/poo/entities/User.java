@@ -28,7 +28,6 @@ public final class User implements ToOutput {
     private ArrayNode transactionsNode;
     private Map<String, Account> accountMap = new HashMap<>();
     private List<PendingTransaction> pendingTransactions = new ArrayList<>();
-//    private List<Commerciant> comerciants = new ArrayList<>();
 
     public User(final String firstName, final String lastName, final String email,
                 final String birthdate, final String occupation) {
@@ -45,7 +44,6 @@ public final class User implements ToOutput {
     }
 
     public int getUserAge(final String birthdate) {
-        // For birthdate in the format "yyyy-MM-dd"
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dateOfBirth = LocalDate.parse(birthdate, formatter);
 
@@ -85,15 +83,6 @@ public final class User implements ToOutput {
         }
         return false;
     }
-
-//    public Commerciant getCommerciant(final String commerciantName) {
-//        for (Commerciant commerciant : comerciants) {
-//            if (commerciant.getCommerciantInput().getCommerciant().equals(commerciantName)) {
-//                return commerciant;
-//            }
-//        }
-//        return null;
-//    }
 
     /**
      * This method is used to get an account by its IBAN.

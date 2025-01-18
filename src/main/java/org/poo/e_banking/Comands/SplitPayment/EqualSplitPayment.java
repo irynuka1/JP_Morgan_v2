@@ -1,7 +1,6 @@
 package org.poo.e_banking.Comands.SplitPayment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.e_banking.Comands.AppLogic;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
@@ -13,161 +12,56 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public final class EqualSplitPayment {
-    private final CommandInput commandInput;
-
-    public EqualSplitPayment(final CommandInput commandInput) {
-        this.commandInput = commandInput;
-    }
-
-    public void execute() {
-        AppLogic appLogic = AppLogic.getInstance();
+public final class EqualSplitPayment implements SplitPaymentStrategy{
+    @Override
+    public void execute(CommandInput commandInput, AppLogic appLogic) {
         Map<String, User> userMap = appLogic.getUserMap();
         ArrayList<User> users = appLogic.getUsers();
         ExchangeRateManager exchangeManager = appLogic.getExchangeRateManager();
 
+        List<Account> accounts = getParticipatingAccounts(users, commandInput.getAccounts());
+
         int numberOfParticipants = commandInput.getAccounts().size();
         double amountPerParticipant = commandInput.getAmount() / numberOfParticipants;
-        List<Account> accounts = getParticipatingAccounts(users);
-        Account insufficientFundsAcc = checkAccountsBalance(accounts, amountPerParticipant, exchangeManager);
+        List<Double> amounts = new ArrayList<>();
+        for (int i = 0; i < numberOfParticipants; i++) {
+            amounts.add(amountPerParticipant);
+        }
+        Account insufficientFundsAcc = checkAccountsBalance(accounts, amounts, exchangeManager, commandInput.getCurrency());
 
         if (insufficientFundsAcc == null) {
-            processSuccessfulPayment(accounts, amountPerParticipant, exchangeManager, userMap);
+            processSuccessfulPayment(accounts, amounts, exchangeManager, userMap, commandInput);
         } else {
-            processFailedPayment(accounts, amountPerParticipant, insufficientFundsAcc, userMap);
+            processFailedPayment(accounts, amounts, insufficientFundsAcc, userMap, commandInput);
         }
     }
 
-    /**
-     * Gets the accounts involved in the split payment.
-     * @return The accounts involved in the split payment.
-     */
-    public List<Account> getParticipatingAccounts(final ArrayList<User> users) {
-        List<Account> accounts = new ArrayList<>();
-
-        for (String iban : commandInput.getAccounts()) {
-            for (User user : users) {
-                Account account = user.getAccountByIban(iban);
-                if (account != null) {
-                    accounts.add(account);
-                    break;
-                }
-            }
-        }
-
-        return accounts;
-    }
-
-    /**
-     * Checks if the accounts involved in the split payment have enough funds to pay the amount.
-     * @param accounts The accounts involved in the split payment.
-     * @param amountPerParticipant The amount each participant was supposed to pay.
-     * @return The last account that had insufficient funds, or null if all accounts had
-     * enough funds.
-     */
-    public Account checkAccountsBalance(final List<Account> accounts,
-                                        final double amountPerParticipant,
-                                        final ExchangeRateManager exchangeManager) {
-        Account insufficientFundsAcc = null;
-
-        for (Account account : accounts) {
-            double exchangeRate = exchangeManager.getExchangeRate(commandInput.getCurrency(),
-                    account.getCurrency());
-            double amountInAccCurrency = amountPerParticipant * exchangeRate;
-
-            if (account.getBalance() - amountInAccCurrency < 0) {
-                insufficientFundsAcc = account;
-            }
-        }
-        return insufficientFundsAcc;
-    }
-
-    /**
-     * Processes a successful payment by withdrawing the amount from each participant's account
-     * and adding the successful transaction to the transactions node of each participant.
-     * @param accounts The accounts involved in the split payment.
-     * @param amountPerParticipant The amount each participant was supposed to pay.
-     */
-    private void processSuccessfulPayment(final List<Account> accounts,
-                                          final double amountPerParticipant,
-                                          final ExchangeRateManager exchangeManager,
-                                          final Map<String, User> userMap) {
-        for (Account account : accounts) {
-            User user = userMap.get(account.getUserEmail());
-            double exchangeRate = exchangeManager.getExchangeRate(commandInput.getCurrency(),
-                    account.getCurrency());
-            double amountInAccountCurrency = amountPerParticipant * exchangeRate;
-            account.withdrawFunds(amountInAccountCurrency);
-            user.getTransactionsNode().add(successOutput(amountPerParticipant));
-        }
-    }
-
-    /**
-     * Processes a failed payment by adding the failed transaction to the transactions node
-     * of each participant.
-     * @param accounts The accounts involved in the split payment.
-     * @param amountPerParticipant The amount each participant was supposed to pay.
-     * @param insufficientFundsAcc The account that had insufficient funds.
-     */
-    private void processFailedPayment(final List<Account> accounts,
-                                      final double amountPerParticipant,
-                                      final Account insufficientFundsAcc,
-                                      final Map<String, User> userMap) {
-        for (Account account : accounts) {
-            User user = userMap.get(account.getUserEmail());
-            user.getTransactionsNode().add(failedOutput(amountPerParticipant,
-                    insufficientFundsAcc));
-            account.getTransactionsNode().add(failedOutput(amountPerParticipant,
-                    insufficientFundsAcc));
-        }
-    }
-
-    /**
-     * Adds the accounts involved in the split payment to the split payment node.
-     * @param splitPaymentWrapper The node containing the split payment information.
-     */
-    public void addInvolvedAccounts(final ObjectNode splitPaymentWrapper) {
-        ArrayNode accountsNode = splitPaymentWrapper.putArray("involvedAccounts");
-        for (String account : commandInput.getAccounts()) {
-            accountsNode.add(account);
-        }
-    }
-
-    /**
-     * Creates a node containing the information of a successful split payment.
-     * @param amountPerParticipant The amount each participant was supposed to pay.
-     * @return The created node.
-     */
-    public ObjectNode successOutput(final double amountPerParticipant) {
+    @Override
+    public ObjectNode successOutput(final CommandInput commandInput, List<Double> amounts) {
         ObjectNode splitPaymentWrapper = new ObjectNode(new ObjectMapper().getNodeFactory());
         splitPaymentWrapper.put("timestamp", commandInput.getTimestamp());
         splitPaymentWrapper.put("description", "Split payment of "
                 + String.format("%.2f", commandInput.getAmount()) + " "
                 + commandInput.getCurrency());
         splitPaymentWrapper.put("currency", commandInput.getCurrency());
-        splitPaymentWrapper.put("amount", amountPerParticipant);
-        addInvolvedAccounts(splitPaymentWrapper);
+        splitPaymentWrapper.put("amount", amounts.getFirst());
+        addInvolvedAccounts(splitPaymentWrapper, commandInput);
 
         return splitPaymentWrapper;
     }
 
-    /**
-     * Creates a node containing the information of a failed split payment.
-     * @param amountPerParticipant The amount each participant was supposed to pay.
-     * @param insufficientFundsAcc The account that had insufficient funds.
-     * @return The created node.
-     */
-    public ObjectNode failedOutput(final double amountPerParticipant,
+    @Override
+    public ObjectNode failedOutput(final CommandInput commandInput, final List<Double> amounts,
                                    final Account insufficientFundsAcc) {
         ObjectNode splitPaymentWrapper = new ObjectNode(new ObjectMapper().getNodeFactory());
-        splitPaymentWrapper.put("amount", amountPerParticipant);
+        splitPaymentWrapper.put("amount", amounts.getFirst());
         splitPaymentWrapper.put("currency", commandInput.getCurrency());
         splitPaymentWrapper.put("description", "Split payment of "
                 + String.format("%.2f", commandInput.getAmount()) + " "
                 + commandInput.getCurrency());
         splitPaymentWrapper.put("error", "Account " + insufficientFundsAcc.getIban()
                 + " has insufficient funds for a split payment.");
-        addInvolvedAccounts(splitPaymentWrapper);
+        addInvolvedAccounts(splitPaymentWrapper, commandInput);
         splitPaymentWrapper.put("splitPaymentType", commandInput.getSplitPaymentType());
         splitPaymentWrapper.put("timestamp", commandInput.getTimestamp());
 

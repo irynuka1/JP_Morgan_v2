@@ -11,7 +11,7 @@ import org.poo.e_banking.Comands.InterestRate.ChangeInterestRate;
 import org.poo.e_banking.Comands.PayOnlineCommand.PayOnline;
 import org.poo.e_banking.Comands.Reports.Report;
 import org.poo.e_banking.Comands.Reports.SpendingsReport;
-import org.poo.e_banking.Comands.SplitPayment.VerifCustomSplit;
+import org.poo.e_banking.Comands.SplitPayment.VerifyCustomSplit;
 import org.poo.e_banking.Comands.SplitPayment.VerifyEqualSplit;
 import org.poo.fileio.CommandInput;
 
@@ -75,7 +75,7 @@ public final class CommandSelector {
                 if (commandInput.getSplitPaymentType().equals("equal")) {
                     command = new VerifyEqualSplit(commandInput, output);
                 } else {
-                    command = new VerifCustomSplit(commandInput, output);
+                    command = new VerifyCustomSplit(commandInput, output);
                 }
                 break;
             case "report":

@@ -19,16 +19,11 @@ public class PendingTransaction {
     }
 
     public void verify(Integer timestamp) {
-        for (String iban : commandInput.getAccounts()) {
-            for (User user : AppLogic.getInstance().getUsers()) {
-                Account account = user.getAccountByIban(iban);
-                if (account != null) {
-                    user.getPendingTransactions().stream()
-                            .filter(pendingTransaction -> pendingTransaction.getTimestamp() == timestamp)
-                            .forEach(pendingTransaction -> pendingTransaction.setVerified(true));
-                    break;
-                }
-            }
-        }
+        commandInput.getAccounts().stream()
+                .flatMap(iban -> AppLogic.getInstance().getUsers().stream()
+                        .filter(user -> user.getAccountByIban(iban) != null))
+                .forEach(user -> user.getPendingTransactions().stream()
+                        .filter(pendingTransaction -> pendingTransaction.getTimestamp() == timestamp)
+                        .forEach(pendingTransaction -> pendingTransaction.setVerified(true)));
     }
 }
