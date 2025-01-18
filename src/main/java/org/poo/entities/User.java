@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.Setter;
+import org.poo.e_banking.PendingTransaction;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -26,6 +27,7 @@ public final class User implements ToOutput {
     private ObjectNode userNode;
     private ArrayNode transactionsNode;
     private Map<String, Account> accountMap = new HashMap<>();
+    private List<PendingTransaction> pendingTransactions = new ArrayList<>();
 //    private List<Commerciant> comerciants = new ArrayList<>();
 
     public User(final String firstName, final String lastName, final String email,

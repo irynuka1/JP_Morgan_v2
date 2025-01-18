@@ -2631,24 +2631,13 @@
     "cardHolder" : "Ruth_Turnbull@yandex.nz",
     "account" : "RO10POOB4354933866366881"
   }, {
-    "amount" : 303.95,
-    "currency" : "EUR",
-    "description" : "Split payment of 6079.00 EUR",
-    "error" : "Account RO10POOB4354933866366881 has insufficient funds for a split payment.",
-    "involvedAccounts" : [ "RO65POOB8944016386845896", "RO68POOB1848616931405475", "RO69POOB9846198978826791", "RO38POOB0964823730995794", "RO30POOB9523423715747796", "RO69POOB6209498372540635", "RO33POOB4049920806186500", "RO79POOB3616857825600958", "RO58POOB7344468893732422", "RO00POOB5687892910835215", "RO90POOB5450777208072365", "RO98POOB8412955460158769", "RO58POOB2721178218599590", "RO76POOB4035116042454483", "RO96POOB6738272785416988", "RO10POOB4354933866366881", "RO19POOB4981055641668812", "RO33POOB9999273999620457", "RO37POOB7013767509830666", "RO32POOB0130532963818359" ],
-    "timestamp" : 399
-  }, {
     "timestamp" : 479,
     "description" : "New account created"
   } ],
   "timestamp" : 499
 }, {
-  "command" : "splitPayment",
-  "output" : {
-    "timestamp" : 500,
-    "description" : "Account not found"
-  },
-  "timestamp" : 500
+  "error" : "One user rejected the split payment",
+  "timestamp" : 532
 }, {
   "command" : "sendMoney",
   "output" : {
@@ -3352,12 +3341,8 @@
   } ],
   "timestamp" : 531
 }, {
-  "command" : "splitPayment",
-  "output" : {
-    "timestamp" : 533,
-    "description" : "Account not found"
-  },
-  "timestamp" : 533
+  "error" : "One user rejected the split payment",
+  "timestamp" : 587
 }, {
   "command" : "payOnline",
   "output" : {
@@ -3499,12 +3484,8 @@
   },
   "timestamp" : 581
 }, {
-  "command" : "splitPayment",
-  "output" : {
-    "timestamp" : 583,
-    "description" : "Account not found"
-  },
-  "timestamp" : 583
+  "error" : "One user rejected the split payment",
+  "timestamp" : 587
 }, {
   "command" : "printUsers",
   "output" : [ {

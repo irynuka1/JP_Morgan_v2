@@ -75,9 +75,11 @@ public final class CommandSelector {
                 break;
             case "splitPayment":
                 if (commandInput.getSplitPaymentType().equals("equal")) {
-                    command = new SplitPayment(commandInput);
-                    break;
+                    command = new VerifySplit(commandInput, output);
+                } else {
+                    command = new VerifCustomSplit(commandInput, output);
                 }
+                break;
             case "report":
                 command = new Report(commandInput, output);
                 break;

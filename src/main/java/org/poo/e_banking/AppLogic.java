@@ -20,6 +20,7 @@ public final class AppLogic {
     private static Map<String, Integer> planTaxMap;
     private static ExchangeRateManager exchangeRateManager;
     private static List<CommerciantInput> commerciants;
+    private static ObjectInput objectInput;
 
     private AppLogic() {
         this.users = new ArrayList<>();
@@ -49,6 +50,7 @@ public final class AppLogic {
         users.clear();
         userMap.clear();
         planTaxMap.clear();
+        this.objectInput = objectInput;
 
         for (var user : objectInput.getUsers()) {
             users.add(new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getBirthDate(),
@@ -123,6 +125,10 @@ public final class AppLogic {
 
     public List<CommerciantInput> getCommerciants() {
         return commerciants;
+    }
+
+    public ObjectInput getObjectInput() {
+        return objectInput;
     }
 
     public static void resetInstance() {

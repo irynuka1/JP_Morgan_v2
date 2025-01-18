@@ -24,6 +24,32 @@ public final class PrintTransactions implements Executable {
         User user = userMap.get(commandInput.getEmail());
 
         if (user != null) {
+            if (user.getPendingTransactions().size() > 0) {
+                user.getPendingTransactions().forEach(pendingTransaction -> {
+                    if (pendingTransaction.getTimestamp() < commandInput.getTimestamp() && !pendingTransaction.isVerified()) {
+                        if (pendingTransaction.getCommandInput().getSplitPaymentType().equals("equal")) {
+                            SplitPayment splitPayment = new SplitPayment(pendingTransaction.getCommandInput());
+                            splitPayment.execute();
+                        } else {
+                            CustomSplitPayment customSplitPayment = new CustomSplitPayment(pendingTransaction.getCommandInput());
+                            customSplitPayment.execute();
+                        }
+
+                        pendingTransaction.verify(pendingTransaction.getTimestamp());
+                    }
+                });
+            }
+
+            for (int i = 0; i < user.getTransactionsNode().size() - 1; i++) {
+                for (int j = i + 1; j < user.getTransactionsNode().size(); j++) {
+                    if (user.getTransactionsNode().get(j).get("timestamp").asInt() < user.getTransactionsNode().get(i).get("timestamp").asInt()) {
+                        ObjectNode temp = (ObjectNode) user.getTransactionsNode().get(i);
+                        user.getTransactionsNode().set(i, user.getTransactionsNode().get(j));
+                        user.getTransactionsNode().set(j, temp);
+                    }
+                }
+            }
+
             createOutputNode(user);
         }
     }

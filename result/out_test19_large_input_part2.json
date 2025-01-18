@@ -365,13 +365,6 @@
   } ],
   "timestamp" : 314
 }, {
-  "command" : "splitPayment",
-  "output" : {
-    "timestamp" : 320,
-    "description" : "Account not found"
-  },
-  "timestamp" : 320
-}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 1,
@@ -760,6 +753,14 @@
     "receiverIBAN" : "RO90POOB5450777208072365",
     "amount" : "410.0 NZD",
     "transferType" : "sent"
+  }, {
+    "amountForUsers" : [ 308.0, 783.9, 422.4, 154.0, 875.0, 79.2, 640.0, 220.0, 616.0, 1188.0, 326.0, 616.0, 316.8, 693.0, 627.2, 1078.0, 63.0, 251.2, 513.0, 1481.4 ],
+    "description" : "Split payment of 11252.10 EUR",
+    "splitPaymentType" : "custom",
+    "currency" : "EUR",
+    "error" : "Account RO58POOB7344468893732422 has insufficient funds for a split payment.",
+    "involvedAccounts" : [ "RO58POOB7344468893732422", "RO69POOB6209498372540635", "RO90POOB5450777208072365", "RO65POOB8944016386845896", "RO58POOB2721178218599590", "RO76POOB4035116042454483", "RO37POOB7013767509830666", "RO19POOB4981055641668812", "RO30POOB9523423715747796", "RO79POOB3616857825600958", "RO00POOB5687892910835215", "RO96POOB6738272785416988", "RO33POOB4049920806186500", "RO69POOB9846198978826791", "RO98POOB8412955460158769", "RO32POOB0130532963818359", "RO68POOB1848616931405475", "RO10POOB4354933866366881", "RO33POOB9999273999620457", "RO38POOB0964823730995794" ],
+    "timestamp" : 320
   } ],
   "timestamp" : 360
 }, {
@@ -1330,7 +1331,7 @@
     "email" : "Dominic_Nicholson@gmail.gb",
     "accounts" : [ {
       "IBAN" : "RO69POOB6209498372540635",
-      "balance" : 968.8863492063492,
+      "balance" : 973.7777777777778,
       "currency" : "GBP",
       "type" : "classic",
       "cards" : [ {
@@ -1493,7 +1494,7 @@
     "email" : "Briana_Galloway@outlook.au",
     "accounts" : [ {
       "IBAN" : "RO33POOB4049920806186500",
-      "balance" : 703.1619047619048,
+      "balance" : 712.3333333333334,
       "currency" : "AUD",
       "type" : "classic",
       "cards" : [ {
@@ -1525,7 +1526,7 @@
       } ]
     }, {
       "IBAN" : "RO97POOB5006417983475785",
-      "balance" : 302.0,
+      "balance" : 730.0,
       "currency" : "INR",
       "type" : "savings",
       "cards" : [ {
@@ -1595,7 +1596,7 @@
     "email" : "Iris_Sanders-Kramer@outlook.nl",
     "accounts" : [ {
       "IBAN" : "RO33POOB9999273999620457",
-      "balance" : 1419.297142857143,
+      "balance" : 1424.8000000000002,
       "currency" : "EUR",
       "type" : "classic",
       "cards" : [ {
@@ -1767,7 +1768,7 @@
     "email" : "Juana_Magana_Zepeda@hotmail.mx",
     "accounts" : [ {
       "IBAN" : "RO98POOB7190609943699593",
-      "balance" : 1417.7142857142858,
+      "balance" : 1540.0,
       "currency" : "MXN",
       "type" : "classic",
       "cards" : [ {
@@ -1971,7 +1972,7 @@
     "email" : "Dominic_Nicholson@gmail.gb",
     "accounts" : [ {
       "IBAN" : "RO69POOB6209498372540635",
-      "balance" : 968.8863492063492,
+      "balance" : 973.7777777777778,
       "currency" : "GBP",
       "type" : "classic",
       "cards" : [ ]
@@ -2104,7 +2105,7 @@
     "email" : "Briana_Galloway@outlook.au",
     "accounts" : [ {
       "IBAN" : "RO33POOB4049920806186500",
-      "balance" : 703.1619047619048,
+      "balance" : 712.3333333333334,
       "currency" : "AUD",
       "type" : "classic",
       "cards" : [ ]
@@ -2130,7 +2131,7 @@
       "cards" : [ ]
     }, {
       "IBAN" : "RO97POOB5006417983475785",
-      "balance" : 2453.307108,
+      "balance" : 3680.1691080000005,
       "currency" : "INR",
       "type" : "savings",
       "cards" : [ {
@@ -2191,7 +2192,7 @@
     "email" : "Iris_Sanders-Kramer@outlook.nl",
     "accounts" : [ {
       "IBAN" : "RO33POOB9999273999620457",
-      "balance" : 1419.297142857143,
+      "balance" : 1424.8000000000002,
       "currency" : "EUR",
       "type" : "classic",
       "cards" : [ ]
@@ -2357,7 +2358,7 @@
     "email" : "Juana_Magana_Zepeda@hotmail.mx",
     "accounts" : [ {
       "IBAN" : "RO98POOB7190609943699593",
-      "balance" : 1417.7142857142858,
+      "balance" : 1540.0,
       "currency" : "MXN",
       "type" : "classic",
       "cards" : [ {
@@ -2507,13 +2508,6 @@
     "description" : "Card not found"
   },
   "timestamp" : 918
-}, {
-  "command" : "splitPayment",
-  "output" : {
-    "timestamp" : 926,
-    "description" : "Account not found"
-  },
-  "timestamp" : 926
 }, {
   "command" : "payOnline",
   "output" : {
@@ -2743,7 +2737,7 @@
     "email" : "Dominic_Nicholson@gmail.gb",
     "accounts" : [ {
       "IBAN" : "RO69POOB6209498372540635",
-      "balance" : 968.8863492063492,
+      "balance" : 973.7777777777778,
       "currency" : "GBP",
       "type" : "classic",
       "cards" : [ ]
@@ -2876,7 +2870,7 @@
     "email" : "Briana_Galloway@outlook.au",
     "accounts" : [ {
       "IBAN" : "RO33POOB4049920806186500",
-      "balance" : 703.1619047619048,
+      "balance" : 712.3333333333334,
       "currency" : "AUD",
       "type" : "classic",
       "cards" : [ ]
@@ -2902,7 +2896,7 @@
       "cards" : [ ]
     }, {
       "IBAN" : "RO97POOB5006417983475785",
-      "balance" : 2453.307108,
+      "balance" : 3680.1691080000005,
       "currency" : "INR",
       "type" : "savings",
       "cards" : [ {
@@ -2963,7 +2957,7 @@
     "email" : "Iris_Sanders-Kramer@outlook.nl",
     "accounts" : [ {
       "IBAN" : "RO33POOB9999273999620457",
-      "balance" : 1419.297142857143,
+      "balance" : 1424.8000000000002,
       "currency" : "EUR",
       "type" : "classic",
       "cards" : [ ]
@@ -3129,7 +3123,7 @@
     "email" : "Juana_Magana_Zepeda@hotmail.mx",
     "accounts" : [ {
       "IBAN" : "RO98POOB7190609943699593",
-      "balance" : 1417.7142857142858,
+      "balance" : 1540.0,
       "currency" : "MXN",
       "type" : "classic",
       "cards" : [ {
@@ -3228,7 +3222,7 @@
     "email" : "Dominic_Nicholson@gmail.gb",
     "accounts" : [ {
       "IBAN" : "RO69POOB6209498372540635",
-      "balance" : 968.8863492063492,
+      "balance" : 973.7777777777778,
       "currency" : "GBP",
       "type" : "classic",
       "cards" : [ ]
@@ -3361,7 +3355,7 @@
     "email" : "Briana_Galloway@outlook.au",
     "accounts" : [ {
       "IBAN" : "RO33POOB4049920806186500",
-      "balance" : 703.1619047619048,
+      "balance" : 712.3333333333334,
       "currency" : "AUD",
       "type" : "classic",
       "cards" : [ ]
@@ -3387,7 +3381,7 @@
       "cards" : [ ]
     }, {
       "IBAN" : "RO97POOB5006417983475785",
-      "balance" : 2453.307108,
+      "balance" : 3680.1691080000005,
       "currency" : "INR",
       "type" : "savings",
       "cards" : [ {
@@ -3448,7 +3442,7 @@
     "email" : "Iris_Sanders-Kramer@outlook.nl",
     "accounts" : [ {
       "IBAN" : "RO33POOB9999273999620457",
-      "balance" : 1419.297142857143,
+      "balance" : 1424.8000000000002,
       "currency" : "EUR",
       "type" : "classic",
       "cards" : [ ]
@@ -3614,7 +3608,7 @@
     "email" : "Juana_Magana_Zepeda@hotmail.mx",
     "accounts" : [ {
       "IBAN" : "RO98POOB7190609943699593",
-      "balance" : 1417.7142857142858,
+      "balance" : 1540.0,
       "currency" : "MXN",
       "type" : "classic",
       "cards" : [ {
@@ -3708,7 +3702,7 @@
   "command" : "spendingsReport",
   "output" : {
     "IBAN" : "RO69POOB6209498372540635",
-    "balance" : 968.8863492063492,
+    "balance" : 973.7777777777778,
     "currency" : "GBP",
     "transactions" : [ ],
     "commerciants" : [ ]
@@ -3834,7 +3828,7 @@
   "command" : "spendingsReport",
   "output" : {
     "IBAN" : "RO33POOB4049920806186500",
-    "balance" : 703.1619047619048,
+    "balance" : 712.3333333333334,
     "currency" : "AUD",
     "transactions" : [ ],
     "commerciants" : [ ]
@@ -3902,7 +3896,7 @@
   "command" : "spendingsReport",
   "output" : {
     "IBAN" : "RO33POOB9999273999620457",
-    "balance" : 1419.297142857143,
+    "balance" : 1424.8000000000002,
     "currency" : "EUR",
     "transactions" : [ ],
     "commerciants" : [ ]
@@ -4012,7 +4006,7 @@
   "command" : "spendingsReport",
   "output" : {
     "IBAN" : "RO98POOB7190609943699593",
-    "balance" : 1417.7142857142858,
+    "balance" : 1540.0,
     "currency" : "MXN",
     "transactions" : [ ],
     "commerciants" : [ ]

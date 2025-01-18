@@ -1,11 +1,4 @@
 [ {
-  "command" : "splitPayment",
-  "output" : {
-    "timestamp" : 5,
-    "description" : "Account not found"
-  },
-  "timestamp" : 5
-}, {
   "command" : "sendMoney",
   "output" : {
     "description" : "User not found",
@@ -210,6 +203,13 @@
     "timestamp" : 1,
     "description" : "New account created"
   }, {
+    "timestamp" : 5,
+    "description" : "Split payment of 168.00 RON",
+    "splitPaymentType" : "custom",
+    "currency" : "RON",
+    "amountForUsers" : [ 90.0, 78.0 ],
+    "involvedAccounts" : [ "RO69POOB6209498372540635", "RO58POOB7344468893732422" ]
+  }, {
     "timestamp" : 10,
     "description" : "Account couldn't be deleted - there are funds remaining"
   }, {
@@ -222,6 +222,13 @@
   "output" : [ {
     "timestamp" : 2,
     "description" : "New account created"
+  }, {
+    "timestamp" : 5,
+    "description" : "Split payment of 168.00 RON",
+    "splitPaymentType" : "custom",
+    "currency" : "RON",
+    "amountForUsers" : [ 90.0, 78.0 ],
+    "involvedAccounts" : [ "RO69POOB6209498372540635", "RO58POOB7344468893732422" ]
   }, {
     "timestamp" : 13,
     "description" : "Insufficient funds"

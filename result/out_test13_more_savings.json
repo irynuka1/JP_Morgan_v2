@@ -437,12 +437,6 @@
   }, {
     "timestamp" : 208,
     "description" : "Account couldn't be deleted - there are funds remaining"
-  }, {
-    "timestamp" : 227,
-    "description" : "Split payment of 1423.00 RON",
-    "currency" : "RON",
-    "amount" : 355.75,
-    "involvedAccounts" : [ "RO69POOB6209498372540635", "RO58POOB2721178218599590", "RO65POOB8944016386845896", "RO58POOB7344468893732422" ]
   } ],
   "timestamp" : 228
 }, {
@@ -456,12 +450,6 @@
   }, {
     "description" : "You do not have a classic account.",
     "timestamp" : 196
-  }, {
-    "timestamp" : 227,
-    "description" : "Split payment of 1423.00 RON",
-    "currency" : "RON",
-    "amount" : 355.75,
-    "involvedAccounts" : [ "RO69POOB6209498372540635", "RO58POOB2721178218599590", "RO65POOB8944016386845896", "RO58POOB7344468893732422" ]
   } ],
   "timestamp" : 229
 }, {
@@ -507,12 +495,6 @@
     "currency" : "RON",
     "description" : "Interest rate income",
     "timestamp" : 224
-  }, {
-    "timestamp" : 227,
-    "description" : "Split payment of 1423.00 RON",
-    "currency" : "RON",
-    "amount" : 355.75,
-    "involvedAccounts" : [ "RO69POOB6209498372540635", "RO58POOB2721178218599590", "RO65POOB8944016386845896", "RO58POOB7344468893732422" ]
   } ],
   "timestamp" : 231
 }, {
@@ -532,12 +514,6 @@
   }, {
     "timestamp" : 209,
     "description" : "Account couldn't be deleted - there are funds remaining"
-  }, {
-    "timestamp" : 227,
-    "description" : "Split payment of 1423.00 RON",
-    "currency" : "RON",
-    "amount" : 355.75,
-    "involvedAccounts" : [ "RO69POOB6209498372540635", "RO58POOB2721178218599590", "RO65POOB8944016386845896", "RO58POOB7344468893732422" ]
   } ],
   "timestamp" : 232
 }, {
