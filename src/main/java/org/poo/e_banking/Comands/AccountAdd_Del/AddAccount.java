@@ -1,7 +1,7 @@
 package org.poo.e_banking.Comands.AccountAdd_Del;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.poo.e_banking.Comands.AppLogic;
+import org.poo.e_banking.AppLogic;
 import org.poo.entities.Account;
 import org.poo.entities.Commerciant;
 import org.poo.entities.User;

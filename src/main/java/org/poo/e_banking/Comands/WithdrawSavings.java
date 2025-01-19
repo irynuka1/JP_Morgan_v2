@@ -2,7 +2,8 @@ package org.poo.e_banking.Comands;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.poo.e_banking.Helpers.Comission;
+import org.poo.e_banking.AppLogic;
+import org.poo.e_banking.Helpers.Commission;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.Account;
@@ -57,7 +58,7 @@ public final class WithdrawSavings implements Executable {
         double amountToWithdraw = commandInput.getAmount() * exchangeRate;
         double exchangeToRON = exchangeManager.getExchangeRate(commandInput.getCurrency(), "RON");
         double amountRON = commandInput.getAmount() * exchangeToRON;
-        double commission = Comission.getComission(user, amountRON);
+        double commission = Commission.getCommission(user, amountRON);
 
         if (account.getBalance() < amountToWithdraw + amountToWithdraw * commission) {
             insufficientFundsOutput(user);

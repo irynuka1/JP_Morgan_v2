@@ -69,6 +69,10 @@ public class Account implements ToOutput {
         }
     }
 
+    /**
+     * This method is used to add a commerciant to the account.
+     * @param commerciantName The commerciant to add.
+     */
     public Commerciant getCommerciant(final String commerciantName) {
         for (Commerciant commerciant : comerciants) {
             if (commerciant.getCommerciantInput().getCommerciant().equals(commerciantName)) {
@@ -84,14 +88,6 @@ public class Account implements ToOutput {
      */
     public void addFunds(final double amount) {
         this.balance += amount;
-    }
-
-    public boolean withdrawCash(final double amount) {
-        if (this.balance - this.minBalance >= amount) {
-            this.balance -= amount;
-            return true;
-        }
-        return false;
     }
 
     /**

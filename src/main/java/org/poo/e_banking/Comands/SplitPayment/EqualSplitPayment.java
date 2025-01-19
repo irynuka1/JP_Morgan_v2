@@ -2,7 +2,7 @@ package org.poo.e_banking.Comands.SplitPayment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.poo.e_banking.Comands.AppLogic;
+import org.poo.e_banking.AppLogic;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
 import org.poo.entities.Account;
 import org.poo.entities.User;
@@ -12,22 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public final class EqualSplitPayment implements SplitPaymentStrategy{
+public final class EqualSplitPayment implements SplitPaymentStrategy {
     @Override
-    public void execute(CommandInput commandInput, AppLogic appLogic) {
+    public void execute(final CommandInput commandInput, final AppLogic appLogic) {
         Map<String, User> userMap = appLogic.getUserMap();
         ArrayList<User> users = appLogic.getUsers();
         ExchangeRateManager exchangeManager = appLogic.getExchangeRateManager();
 
         List<Account> accounts = getParticipatingAccounts(users, commandInput.getAccounts());
+        List<Double> amounts = getAmounts(commandInput);
 
-        int numberOfParticipants = commandInput.getAccounts().size();
-        double amountPerParticipant = commandInput.getAmount() / numberOfParticipants;
-        List<Double> amounts = new ArrayList<>();
-        for (int i = 0; i < numberOfParticipants; i++) {
-            amounts.add(amountPerParticipant);
-        }
-        Account insufficientFundsAcc = checkAccountsBalance(accounts, amounts, exchangeManager, commandInput.getCurrency());
+        Account insufficientFundsAcc = checkAccountsBalance(accounts, amounts, exchangeManager,
+                commandInput.getCurrency());
 
         if (insufficientFundsAcc == null) {
             processSuccessfulPayment(accounts, amounts, exchangeManager, userMap, commandInput);
@@ -36,8 +32,26 @@ public final class EqualSplitPayment implements SplitPaymentStrategy{
         }
     }
 
+    /**
+     * Creates a list with the amounts that each account has to pay.
+     *
+     * @param commandInput The command input that contains the information about the split payment.
+     * @return The list of amounts equal for each participant.
+     */
+    public List<Double> getAmounts(final CommandInput commandInput) {
+        int numberOfParticipants = commandInput.getAccounts().size();
+        double amountPerParticipant = commandInput.getAmount() / numberOfParticipants;
+        List<Double> amounts = new ArrayList<>();
+
+        for (int i = 0; i < numberOfParticipants; i++) {
+            amounts.add(amountPerParticipant);
+        }
+
+        return amounts;
+    }
+
     @Override
-    public ObjectNode successOutput(final CommandInput commandInput, List<Double> amounts) {
+    public ObjectNode successOutput(final CommandInput commandInput, final List<Double> amounts) {
         ObjectNode splitPaymentWrapper = new ObjectNode(new ObjectMapper().getNodeFactory());
         splitPaymentWrapper.put("timestamp", commandInput.getTimestamp());
         splitPaymentWrapper.put("description", "Split payment of "

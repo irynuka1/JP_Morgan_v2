@@ -2,13 +2,11 @@ package org.poo.e_banking.Comands.SplitPayment;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.poo.e_banking.Comands.AppLogic;
-import org.poo.entities.Account;
-import org.poo.entities.User;
+import org.poo.e_banking.AppLogic;
 import org.poo.fileio.CommandInput;
 
 @Getter@Setter
-public class PendingTransaction {
+public final class PendingTransaction {
     private final CommandInput commandInput;
     private final int timestamp;
     private boolean isVerified = false;
@@ -18,14 +16,17 @@ public class PendingTransaction {
         this.timestamp = timestamp;
     }
 
-    public void verify(Integer timestamp) {
+    /**
+     * Verifies the pending transaction with the given timestamp.
+     */
+    public void verify(final Integer currentTimestamp) {
         commandInput.getAccounts().stream()
                 .flatMap(iban -> AppLogic.getInstance().getUsers().stream()
                         .filter(user -> user.getAccountByIban(iban) != null))
                 .forEach(user -> user.getPendingTransactions().stream()
-                        .filter(pendingTransaction -> pendingTransaction.getTimestamp() == timestamp)
+                        .filter(pendingTransaction ->
+                                pendingTransaction.getTimestamp() == currentTimestamp)
                         .findFirst()
                         .ifPresent(pendingTransaction -> pendingTransaction.setVerified(true)));
-//                        .forEach(pendingTransaction -> pendingTransaction.setVerified(true)));
     }
 }

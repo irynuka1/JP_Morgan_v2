@@ -2304,9 +2304,6 @@
   },
   "timestamp" : 838
 }, {
-  "error" : "One user rejected the split payment",
-  "timestamp" : 842
-}, {
   "command" : "spendingsReport",
   "output" : {
     "IBAN" : "RO69POOB9846198978826791",

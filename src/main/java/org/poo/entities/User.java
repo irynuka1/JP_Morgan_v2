@@ -43,9 +43,14 @@ public final class User implements ToOutput {
         transactionsNode = userNode.putArray("output");
     }
 
-    public int getUserAge(final String birthdate) {
+    /**
+     * This method is used to get the age of the user.
+     * @param userBirthdate The birthdate of the user.
+     * @return Returns the age of the user.
+     */
+    public int getUserAge(final String userBirthdate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate dateOfBirth = LocalDate.parse(birthdate, formatter);
+        LocalDate dateOfBirth = LocalDate.parse(userBirthdate, formatter);
 
         LocalDate now = LocalDate.now();
         return Period.between(dateOfBirth, now).getYears();

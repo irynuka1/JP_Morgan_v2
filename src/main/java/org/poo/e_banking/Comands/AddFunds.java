@@ -1,5 +1,6 @@
 package org.poo.e_banking.Comands;
 
+import org.poo.e_banking.AppLogic;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;

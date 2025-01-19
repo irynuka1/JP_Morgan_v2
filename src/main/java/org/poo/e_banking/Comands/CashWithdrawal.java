@@ -3,15 +3,16 @@ package org.poo.e_banking.Comands;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.poo.e_banking.AppLogic;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.Account;
 import org.poo.entities.Card;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;
-import org.poo.e_banking.Helpers.Comission;
+import org.poo.e_banking.Helpers.Commission;
 
-public class CashWithdrawal implements Executable {
+public final class CashWithdrawal implements Executable {
     private final CommandInput commandInput;
     private final ArrayNode output;
 
@@ -24,6 +25,8 @@ public class CashWithdrawal implements Executable {
     public void execute() {
         AppLogic appLogic = AppLogic.getInstance();
         User user = appLogic.getUserMap().get(commandInput.getEmail());
+        ExchangeRateManager exchangeManager = appLogic.getExchangeRateManager();
+
         if (user == null) {
             generateOutput("User not found", null);
             return;
@@ -40,17 +43,16 @@ public class CashWithdrawal implements Executable {
             return;
         }
 
-        processWithdrawal(user, card);
+        processWithdrawal(user, card, exchangeManager);
     }
 
-    private void processWithdrawal(User user, Card card) {
-        AppLogic appLogic = AppLogic.getInstance();
-        ExchangeRateManager exchangeRateManager = appLogic.getExchangeRateManager();
+    private void processWithdrawal(final User user, final Card card,
+                                   final ExchangeRateManager exchangeManager) {
         Account account = user.getAccountByIban(card.getAssociatedIban());
 
-        double exchangeToRON = exchangeRateManager.getExchangeRate(account.getCurrency(), "RON");
+        double exchangeToRON = exchangeManager.getExchangeRate(account.getCurrency(), "RON");
         double amountRON = account.getBalance() * exchangeToRON;
-        double commission = Comission.getComission(user, commandInput.getAmount());
+        double commission = Commission.getCommission(user, commandInput.getAmount());
         double totalWithdrawal = commandInput.getAmount() + commandInput.getAmount() * commission;
 
         if (amountRON < totalWithdrawal) {
@@ -58,17 +60,17 @@ public class CashWithdrawal implements Executable {
             return;
         }
 
-        double exchangeRate = exchangeRateManager.getExchangeRate("RON", account.getCurrency());
+        double exchangeRate = exchangeManager.getExchangeRate("RON", account.getCurrency());
         double amountInAccountCurrency = totalWithdrawal * exchangeRate;
 
-        if (account.withdrawCash(amountInAccountCurrency)) {
+        if (account.withdrawFunds(amountInAccountCurrency)) {
             successOutput(user, account);
         } else {
             failedOutput(user, account);
         }
     }
 
-    private void generateOutput(String description, String command) {
+    private void generateOutput(final String description, final String command) {
         ObjectNode outputNode = new ObjectMapper().createObjectNode();
         outputNode.put("description", description);
         outputNode.put("timestamp", commandInput.getTimestamp());
@@ -84,33 +86,35 @@ public class CashWithdrawal implements Executable {
         }
     }
 
-    private void frozenCardOutput(User user, String description) {
+    private void frozenCardOutput(final User user, final String description) {
         ObjectNode outputNode = new ObjectMapper().createObjectNode();
         outputNode.put("description", description);
         outputNode.put("timestamp", commandInput.getTimestamp());
         user.getTransactionsNode().add(outputNode);
     }
 
-    private void insufficientFundsOutput(User user, Account account) {
+    private void insufficientFundsOutput(final User user, final Account account) {
         ObjectNode outputNode = createTransactionNode("Insufficient funds");
         user.getTransactionsNode().add(outputNode);
         account.getTransactionsNode().add(outputNode);
     }
 
-    private void successOutput(User user, Account account) {
-        ObjectNode outputNode = createTransactionNode("Cash withdrawal of " + commandInput.getAmount());
+    private void successOutput(final User user, final Account account) {
+        ObjectNode outputNode = createTransactionNode("Cash withdrawal of "
+                + commandInput.getAmount());
         outputNode.put("amount", commandInput.getAmount());
         user.getTransactionsNode().add(outputNode);
         account.getTransactionsNode().add(outputNode);
     }
 
-    private void failedOutput(User user, Account account) {
-        ObjectNode outputNode = createTransactionNode("Cannot perform payment due to a minimum balance being set");
+    private void failedOutput(final User user, final Account account) {
+        ObjectNode outputNode = createTransactionNode("Cannot perform payment due to"
+                + "a minimum balance being set");
         user.getTransactionsNode().add(outputNode);
         account.getTransactionsNode().add(outputNode);
     }
 
-    private ObjectNode createTransactionNode(String description) {
+    private ObjectNode createTransactionNode(final String description) {
         ObjectNode outputNode = new ObjectMapper().createObjectNode();
         outputNode.put("description", description);
         outputNode.put("timestamp", commandInput.getTimestamp());

@@ -1,4 +1,4 @@
-package org.poo.e_banking.Comands;
+package org.poo.e_banking;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.poo.e_banking.Helpers.CommandSelector;
@@ -8,10 +8,18 @@ import org.poo.fileio.CommandInput;
 import org.poo.fileio.CommerciantInput;
 import org.poo.fileio.ObjectInput;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.Arrays;
 
 public final class AppLogic {
     private static AppLogic instance = null;
+
+    private static final int STANDARD_TAX = 100;
+    private static final int SILVER_TAX = 250;
+    private static final int GOLD_TAX = 350;
 
     private static ArrayList<User> users;
     private static ArrayNode output;
@@ -29,6 +37,11 @@ public final class AppLogic {
         this.commerciants = new ArrayList<>();
     }
 
+    /**
+     * Returns the instance of the AppLogic class or creates a new one if it doesn't exist.
+     *
+     * @return The instance of the AppLogic class.
+     */
     public static AppLogic getInstance() {
         if (instance == null) {
             synchronized (AppLogic.class) {
@@ -43,38 +56,32 @@ public final class AppLogic {
     /**
      * Initializes the application with the object input.
      *
-     * @param objectInput The object input to be used.
+     * @param input The object input to be used.
      */
-    public void initApp(final ObjectInput objectInput) {
+    public void initApp(final ObjectInput input) {
         users.clear();
         userMap.clear();
         planTaxMap.clear();
-        this.objectInput = objectInput;
+        this.objectInput = input;
 
-        for (var user : objectInput.getUsers()) {
-            users.add(new User(user.getFirstName(), user.getLastName(), user.getEmail(), user.getBirthDate(),
-                               user.getOccupation()));
+        for (var user : input.getUsers()) {
+            users.add(new User(user.getFirstName(), user.getLastName(), user.getEmail(),
+                    user.getBirthDate(), user.getOccupation()));
             userMap.put(user.getEmail(), users.getLast());
         }
 
-//        for (var commerciant : objectInput.getCommerciants()) {
-//            for (var user : users) {
-//                user.getComerciants().add(new Commerciant(commerciant));
-//            }
-//        }
+        commerciants.addAll(Arrays.asList(input.getCommerciants()));
 
-        commerciants.addAll(Arrays.asList(objectInput.getCommerciants()));
-
-        for (var exchangeRate : objectInput.getExchangeRates()) {
+        for (var exchangeRate : input.getExchangeRates()) {
             exchangeRateManager.addExchangeRate(exchangeRate.getFrom(), exchangeRate.getTo(),
                                                 exchangeRate.getRate());
         }
 
-        planTaxMap.put("standard -> silver", 100);
-        planTaxMap.put("student -> silver", 100);
-        planTaxMap.put("silver -> gold", 250);
-        planTaxMap.put("standard -> gold", 350);
-        planTaxMap.put("student -> gold", 350);
+        planTaxMap.put("standard -> silver", STANDARD_TAX);
+        planTaxMap.put("student -> silver", STANDARD_TAX);
+        planTaxMap.put("silver -> gold", SILVER_TAX);
+        planTaxMap.put("standard -> gold", GOLD_TAX);
+        planTaxMap.put("student -> gold", GOLD_TAX);
     }
 
     /**
@@ -89,11 +96,11 @@ public final class AppLogic {
     /**
      * Iterates through the input and processes the commands.
      *
-     * @param objectInput The object input to be used.
+     * @param input The object input to be used.
      */
-    public void startSession(final ObjectInput objectInput) {
-        for (int i = 0; i < objectInput.getCommands().length; i++) {
-            processCommands(objectInput.getCommands()[i]);
+    public void startSession(final ObjectInput input) {
+        for (int i = 0; i < input.getCommands().length; i++) {
+            processCommands(input.getCommands()[i]);
         }
     }
 
@@ -130,6 +137,9 @@ public final class AppLogic {
         return objectInput;
     }
 
+    /**
+     * Resets the instance of the AppLogic class.
+     */
     public static void resetInstance() {
         instance = null;
     }

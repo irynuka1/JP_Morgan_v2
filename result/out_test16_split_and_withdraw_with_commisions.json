@@ -267,7 +267,11 @@
   } ],
   "timestamp" : 177
 }, {
-  "error" : "User not found",
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 179
+  },
   "timestamp" : 179
 }, {
   "command" : "printTransactions",
@@ -383,7 +387,11 @@
   } ],
   "timestamp" : 194
 }, {
-  "error" : "User not found",
+  "command" : "rejectSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 212
+  },
   "timestamp" : 212
 }, {
   "command" : "printTransactions",
@@ -815,7 +823,11 @@
   } ],
   "timestamp" : 236
 }, {
-  "error" : "User not found",
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 240
+  },
   "timestamp" : 240
 }, {
   "command" : "printTransactions",

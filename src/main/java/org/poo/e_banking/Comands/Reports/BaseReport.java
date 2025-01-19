@@ -3,7 +3,7 @@ package org.poo.e_banking.Comands.Reports;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.poo.e_banking.Comands.AppLogic;
+import org.poo.e_banking.AppLogic;
 import org.poo.e_banking.Helpers.Executable;
 import org.poo.entities.Account;
 import org.poo.entities.User;

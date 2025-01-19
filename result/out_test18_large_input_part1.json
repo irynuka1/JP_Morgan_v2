@@ -2636,9 +2636,6 @@
   } ],
   "timestamp" : 499
 }, {
-  "error" : "One user rejected the split payment",
-  "timestamp" : 532
-}, {
   "command" : "sendMoney",
   "output" : {
     "description" : "User not found",
@@ -3341,9 +3338,6 @@
   } ],
   "timestamp" : 531
 }, {
-  "error" : "One user rejected the split payment",
-  "timestamp" : 587
-}, {
   "command" : "payOnline",
   "output" : {
     "timestamp" : 543,
@@ -3483,9 +3477,6 @@
     "description" : "Card not found"
   },
   "timestamp" : 581
-}, {
-  "error" : "One user rejected the split payment",
-  "timestamp" : 587
 }, {
   "command" : "printUsers",
   "output" : [ {
