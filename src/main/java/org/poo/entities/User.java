@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Getter;
 import lombok.Setter;
-import org.poo.e_banking.Comands.SplitPayment.PendingTransaction;
+import org.poo.e_banking.commands.splitPayment.PendingTransaction;
 
 import java.time.LocalDate;
 import java.time.Period;

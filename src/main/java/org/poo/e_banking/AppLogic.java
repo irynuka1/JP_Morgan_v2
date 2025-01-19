@@ -1,8 +1,8 @@
 package org.poo.e_banking;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.poo.e_banking.Helpers.CommandSelector;
-import org.poo.e_banking.Helpers.ExchangeRateManager;
+import org.poo.e_banking.helpers.CommandSelector;
+import org.poo.e_banking.helpers.ExchangeRateManager;
 import org.poo.entities.User;
 import org.poo.fileio.CommandInput;
 import org.poo.fileio.CommerciantInput;
