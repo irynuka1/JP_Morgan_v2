@@ -1524,6 +1524,9 @@
     "card" : "8509650399173661",
     "cardHolder" : "Hulda_Kaiser@outlook.ch",
     "account" : "RO32POOB0130532963818359"
+  }, {
+    "description" : "Insufficient funds",
+    "timestamp" : 554
   } ],
   "timestamp" : 610
 }, {

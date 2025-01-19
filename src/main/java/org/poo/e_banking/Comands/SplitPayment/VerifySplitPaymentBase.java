@@ -53,18 +53,18 @@ public abstract class VerifySplitPaymentBase implements Executable {
         for (int i = 0; i < objectInput.getCommands().length; i++) {
             if (objectInput.getCommands()[i].getTimestamp() > commandInput.getTimestamp()) {
                 if (isRejectCommand(objectInput, i)) {
-                    User user = getUserWithError(userMap, objectInput, i);
+                    User user = getUserWithError(userMap, objectInput, i, "rejectSplitPayment");
                     if (user == null) return -1;
 
                     if (isUserInvolved(user, accounts)) {
-                        addRejectionError(objectInput, i);
+                        addRejectionError(accounts, userMap);
                         return -1;
                     }
                     return -1;
                 }
 
                 if (isAcceptCommand(objectInput, i)) {
-                    User user = getUserWithError(userMap, objectInput, i);
+                    User user = getUserWithError(userMap, objectInput, i, "acceptSplitPayment");
                     if (user == null) return -1;
 
                     for (Account account : user.getAccounts()) {
@@ -85,22 +85,64 @@ public abstract class VerifySplitPaymentBase implements Executable {
         return verifiedAccounts == accounts.size() ? lastTimestamp : -1;
     }
 
-    private User getUserWithError(Map<String, User> userMap, ObjectInput objectInput, int index) {
+    private User getUserWithError(Map<String, User> userMap, ObjectInput objectInput, int index, String command) {
         User user = userMap.get(objectInput.getCommands()[index].getEmail());
         if (user == null) {
             ObjectNode objectNode = new ObjectNode(new ObjectMapper().getNodeFactory());
-            objectNode.put("error", "User not found");
+            objectNode.put("command", command);
+            ObjectNode errorNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+            objectNode.set("output", errorNode);
+            errorNode.put("description", "User not found");
+            errorNode.put("timestamp", objectInput.getCommands()[index].getTimestamp());
             objectNode.put("timestamp", objectInput.getCommands()[index].getTimestamp());
             output.add(objectNode);
         }
+
         return user;
     }
 
-    private void addRejectionError(ObjectInput objectInput, int index) {
-        ObjectNode objectNode = new ObjectNode(new ObjectMapper().getNodeFactory());
-        objectNode.put("error", "One user rejected the split payment");
-        objectNode.put("timestamp", objectInput.getCommands()[index].getTimestamp());
-        output.add(objectNode);
+    private void addRejectionError(List<Account> accounts, Map<String, User> userMap) {
+        if (splitType.equals("custom")) {
+            ObjectNode objectNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+            ArrayNode amountPerParticipant = objectNode.putArray("amountForUsers");
+            for (int i = 0; i < accounts.size(); i++) {
+                amountPerParticipant.add(commandInput.getAmountForUsers().get(i));
+            }
+            objectNode.put("currency", commandInput.getCurrency());
+            objectNode.put("description", "Split payment of "
+                    + String.format("%.2f", commandInput.getAmount()) + " "
+                    + commandInput.getCurrency());
+            objectNode.put("error", "One user rejected the payment");
+            ArrayNode accountsNode = objectNode.putArray("involvedAccounts");
+            for (String account : commandInput.getAccounts()) {
+                accountsNode.add(account);
+            }
+            objectNode.put("splitPaymentType", commandInput.getSplitPaymentType());
+            objectNode.put("timestamp", commandInput.getTimestamp());
+
+            for (Account account : accounts) {
+                User user = userMap.get(account.getUserEmail());
+                user.getTransactionsNode().add(objectNode);
+            }
+        } else {
+            ObjectNode objectNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+            objectNode.put("timestamp", commandInput.getTimestamp());
+            objectNode.put("description", "Split payment of "
+                    + String.format("%.2f", commandInput.getAmount()) + " "
+                    + commandInput.getCurrency());
+            objectNode.put("currency", commandInput.getCurrency());
+            objectNode.put("amount", commandInput.getAmount());
+            ArrayNode accountsNode = objectNode.putArray("involvedAccounts");
+            for (String account : commandInput.getAccounts()) {
+                accountsNode.add(account);
+            }
+            objectNode.put("error", "One user rejected the payment");
+
+            for (Account account : accounts) {
+                User user = userMap.get(account.getUserEmail());
+                user.getTransactionsNode().add(objectNode);
+            }
+        }
     }
 
     private boolean isUserInvolved(User user, List<Account> accounts) {

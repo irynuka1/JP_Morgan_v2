@@ -1,6 +1,7 @@
 package org.poo.e_banking.Comands;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.e_banking.Helpers.ExchangeRateManager;
 import org.poo.e_banking.Helpers.Executable;
@@ -13,9 +14,11 @@ import java.util.Map;
 
 public final class UpgradePlan implements Executable {
     private final CommandInput commandInput;
+    private final ArrayNode output;
 
-    public UpgradePlan(final CommandInput commandInput) {
+    public UpgradePlan(final CommandInput commandInput, final ArrayNode output) {
         this.commandInput = commandInput;
+        this.output = output;
     }
 
     @Override
@@ -36,17 +39,32 @@ public final class UpgradePlan implements Executable {
             }
         }
 
-        if (user != null) {
-            String key = user.getPlan() + " -> " + commandInput.getNewPlanType();
-            if (planTaxMap.containsKey(key)) {
-                double exchangeRate = exchangeManager.getExchangeRate("RON",
-                        account.getCurrency());
-                double amountInAccountCurrency = planTaxMap.get(key) * exchangeRate;
+        if (user == null) {
+            ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+            outputNode.put("command", "upgradePlan");
+            ObjectNode errorNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+            outputNode.set("output", errorNode);
+            errorNode.put("description", "Account not found");
+            errorNode.put("timestamp", commandInput.getTimestamp());
+            outputNode.put("timestamp", commandInput.getTimestamp());
+            output.add(outputNode);
+            return;
+        }
 
-                if (account.withdrawFunds(amountInAccountCurrency)) {
-                    user.setPlan(commandInput.getNewPlanType());
-                    logTransaction(user, account, successOutput());
-                }
+        String key = user.getPlan() + " -> " + commandInput.getNewPlanType();
+        if (planTaxMap.containsKey(key)) {
+            double exchangeRate = exchangeManager.getExchangeRate("RON",
+                    account.getCurrency());
+            double amountInAccountCurrency = planTaxMap.get(key) * exchangeRate;
+
+            if (account.withdrawFunds(amountInAccountCurrency)) {
+                user.setPlan(commandInput.getNewPlanType());
+                logTransaction(user, account, successOutput());
+            } else {
+                ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+                outputNode.put("description", "Insufficient funds");
+                outputNode.put("timestamp", commandInput.getTimestamp());
+                logTransaction(user, account, outputNode);
             }
         }
     }

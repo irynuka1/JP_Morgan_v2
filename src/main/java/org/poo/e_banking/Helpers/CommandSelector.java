@@ -91,13 +91,13 @@ public final class CommandSelector {
                 command = new WithdrawSavings(commandInput);
                 break;
             case "upgradePlan":
-                command = new UpgradePlan(commandInput);
+                command = new UpgradePlan(commandInput, output);
                 break;
             case "cashWithdrawal":
                 command = new CashWithdrawal(commandInput, output);
                 break;
             default:
-                System.out.println("Invalid command " + commandInput.getCommand());
+                break;
         }
 
         if (command != null) {

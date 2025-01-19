@@ -24,6 +24,8 @@ public class PendingTransaction {
                         .filter(user -> user.getAccountByIban(iban) != null))
                 .forEach(user -> user.getPendingTransactions().stream()
                         .filter(pendingTransaction -> pendingTransaction.getTimestamp() == timestamp)
-                        .forEach(pendingTransaction -> pendingTransaction.setVerified(true)));
+                        .findFirst()
+                        .ifPresent(pendingTransaction -> pendingTransaction.setVerified(true)));
+//                        .forEach(pendingTransaction -> pendingTransaction.setVerified(true)));
     }
 }
