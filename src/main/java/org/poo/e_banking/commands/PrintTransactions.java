@@ -56,7 +56,6 @@ public final class PrintTransactions implements Executable {
         int n = user.getTransactionsNode().size();
         boolean swapped;
 
-        // Using stable bubble sort to maintain relative order of equal timestamps
         for (int i = 0; i < n - 1; i++) {
             swapped = false;
             for (int j = 0; j < n - i - 1; j++) {
