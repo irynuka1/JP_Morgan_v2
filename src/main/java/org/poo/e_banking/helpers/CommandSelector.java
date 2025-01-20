@@ -1,6 +1,7 @@
 package org.poo.e_banking.helpers;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.poo.e_banking.AppLogic;
 import org.poo.e_banking.commands.accountAdd_Del.AddAccount;
 import org.poo.e_banking.commands.accountAdd_Del.DeleteAccount;
 import org.poo.e_banking.commands.AddFunds;
@@ -105,7 +106,24 @@ public final class CommandSelector {
             case "cashWithdrawal":
                 command = new CashWithdrawal(commandInput, output);
                 break;
+            case "acceptSplitPayment":
+                for (int i = 0; i < AppLogic.getInstance().getUserNotFounds().size(); i++) {
+                    if (AppLogic.getInstance().getUserNotFounds().get(i).get("timestamp").asInt() == commandInput.getTimestamp()) {
+                        output.add(AppLogic.getInstance().getUserNotFounds().get(i));
+                        break;
+                    }
+                }
+                break;
+            case "rejectSplitPayment":
+                for (int i = 0; i < AppLogic.getInstance().getUserNotFounds().size(); i++) {
+                    if (AppLogic.getInstance().getUserNotFounds().get(i).get("timestamp").asInt() == commandInput.getTimestamp()) {
+                        output.add(AppLogic.getInstance().getUserNotFounds().get(i));
+                        break;
+                    }
+                }
+                break;
             default:
+                System.out.println("Invalid command " + commandInput.getCommand());
                 break;
         }
 

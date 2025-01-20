@@ -1,6 +1,7 @@
 package org.poo.e_banking;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.e_banking.helpers.CommandSelector;
 import org.poo.e_banking.helpers.ExchangeRateManager;
 import org.poo.entities.User;
@@ -28,6 +29,8 @@ public final class AppLogic {
     private static ExchangeRateManager exchangeRateManager;
     private static List<CommerciantInput> commerciants;
     private static ObjectInput objectInput;
+    private static ArrayList<Integer> verificationTimestamps;
+    private static ArrayList<ObjectNode> userNotFounds;
 
     private AppLogic() {
         this.users = new ArrayList<>();
@@ -35,6 +38,8 @@ public final class AppLogic {
         this.exchangeRateManager = new ExchangeRateManager();
         this.planTaxMap = new HashMap<>();
         this.commerciants = new ArrayList<>();
+        this.verificationTimestamps = new ArrayList<>();
+        this.userNotFounds = new ArrayList<>();
     }
 
     /**
@@ -135,6 +140,14 @@ public final class AppLogic {
 
     public ObjectInput getObjectInput() {
         return objectInput;
+    }
+
+    public ArrayList<Integer> getVerificationTimestamps() {
+        return verificationTimestamps;
+    }
+
+    public ArrayList<ObjectNode> getUserNotFounds() {
+        return userNotFounds;
     }
 
     /**

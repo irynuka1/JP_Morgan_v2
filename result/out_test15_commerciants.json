@@ -2389,6 +2389,11 @@
     "amount" : 99.0,
     "commerciant" : "KFC"
   }, {
+    "description" : "Upgrade plan",
+    "accountIBAN" : "RO65POOB8944016386845896",
+    "newPlanType" : "gold",
+    "timestamp" : 509
+  }, {
     "timestamp" : 517,
     "description" : "Card payment",
     "amount" : 20.0,
@@ -2491,7 +2496,7 @@
     "email" : "Jeannine_de_Evrard@yahoo.fr",
     "accounts" : [ {
       "IBAN" : "RO65POOB8944016386845896",
-      "balance" : 1356.2399999999998,
+      "balance" : 1356.28,
       "currency" : "EUR",
       "type" : "classic",
       "cards" : [ {

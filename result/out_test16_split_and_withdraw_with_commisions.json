@@ -290,6 +290,13 @@
   } ],
   "timestamp" : 180
 }, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 181
+  },
+  "timestamp" : 181
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 115,
@@ -303,6 +310,13 @@
   } ],
   "timestamp" : 182
 }, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 183
+  },
+  "timestamp" : 183
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 73,
@@ -315,6 +329,13 @@
     "account" : "RO58POOB2721178218599590"
   } ],
   "timestamp" : 184
+}, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 185
+  },
+  "timestamp" : 185
 }, {
   "command" : "printTransactions",
   "output" : [ {
@@ -332,6 +353,13 @@
   } ],
   "timestamp" : 186
 }, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 187
+  },
+  "timestamp" : 187
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 91,
@@ -348,6 +376,13 @@
   } ],
   "timestamp" : 188
 }, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 189
+  },
+  "timestamp" : 189
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 86,
@@ -360,6 +395,13 @@
     "account" : "RO76POOB4035116042454483"
   } ],
   "timestamp" : 190
+}, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 191
+  },
+  "timestamp" : 191
 }, {
   "command" : "printTransactions",
   "output" : [ {
@@ -374,6 +416,13 @@
   } ],
   "timestamp" : 192
 }, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 193
+  },
+  "timestamp" : 193
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 23,
@@ -387,12 +436,12 @@
   } ],
   "timestamp" : 194
 }, {
-  "command" : "rejectSplitPayment",
+  "command" : "acceptSplitPayment",
   "output" : {
     "description" : "User not found",
-    "timestamp" : 212
+    "timestamp" : 196
   },
-  "timestamp" : 212
+  "timestamp" : 196
 }, {
   "command" : "printTransactions",
   "output" : [ {
@@ -406,6 +455,13 @@
     "account" : "RO69POOB9846198978826791"
   } ],
   "timestamp" : 197
+}, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 198
+  },
+  "timestamp" : 198
 }, {
   "command" : "printTransactions",
   "output" : [ {
@@ -422,6 +478,76 @@
     "description" : "New account created"
   } ],
   "timestamp" : 199
+}, {
+  "command" : "rejectSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 212
+  },
+  "timestamp" : 212
+}, {
+  "command" : "rejectSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 213
+  },
+  "timestamp" : 213
+}, {
+  "command" : "rejectSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 214
+  },
+  "timestamp" : 214
+}, {
+  "command" : "rejectSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 215
+  },
+  "timestamp" : 215
+}, {
+  "command" : "rejectSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 216
+  },
+  "timestamp" : 216
+}, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 217
+  },
+  "timestamp" : 217
+}, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 218
+  },
+  "timestamp" : 218
+}, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 219
+  },
+  "timestamp" : 219
+}, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 220
+  },
+  "timestamp" : 220
+}, {
+  "command" : "rejectSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 221
+  },
+  "timestamp" : 221
 }, {
   "command" : "printUsers",
   "output" : [ {
@@ -856,6 +982,13 @@
   } ],
   "timestamp" : 242
 }, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 245
+  },
+  "timestamp" : 245
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 23,
@@ -873,6 +1006,13 @@
     "timestamp" : 244
   } ],
   "timestamp" : 247
+}, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 250
+  },
+  "timestamp" : 250
 }, {
   "command" : "printTransactions",
   "output" : [ {
@@ -892,6 +1032,13 @@
   } ],
   "timestamp" : 252
 }, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 255
+  },
+  "timestamp" : 255
+}, {
   "command" : "printTransactions",
   "output" : [ {
     "timestamp" : 86,
@@ -909,6 +1056,13 @@
     "timestamp" : 254
   } ],
   "timestamp" : 257
+}, {
+  "command" : "acceptSplitPayment",
+  "output" : {
+    "description" : "User not found",
+    "timestamp" : 260
+  },
+  "timestamp" : 260
 }, {
   "command" : "printTransactions",
   "output" : [ {

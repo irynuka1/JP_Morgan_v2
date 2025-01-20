@@ -16,5 +16,12 @@ Starting audit...
 [ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\entities\Commerciant.java:71:61: '0.05' is a magic number. [MagicNumber]
 [ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\entities\Commerciant.java:73:50: '10' is a magic number. [MagicNumber]
 [ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\entities\Commerciant.java:74:61: '0.1' is a magic number. [MagicNumber]
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\e_banking\commands\payOnlineCommand\PayOnline.java:7:8: Unused import - org.poo.e_banking.commands.UpgradePlan. [UnusedImports]
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\e_banking\commands\payOnlineCommand\PayOnline.java:93:44: '5' is a magic number. [MagicNumber]
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\e_banking\commands\payOnlineCommand\PayOnline.java:120:28: '300' is a magic number. [MagicNumber]
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\e_banking\commands\splitPayment\VerifySplitPaymentBase.java:63: Line is longer than 100 characters (found 115). [LineLength]
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\e_banking\commands\splitPayment\VerifySplitPaymentBase.java:70: Line is longer than 100 characters (found 103). [LineLength]
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\e_banking\helpers\CommandSelector.java:111: Line is longer than 100 characters (found 131). [LineLength]
+[ERROR] D:\UNI\POO\POO_ETAPA2\.\src\main\java\org\poo\e_banking\helpers\CommandSelector.java:119: Line is longer than 100 characters (found 131). [LineLength]
 Audit done.
-Checkstyle ends with 17 errors.
+Checkstyle ends with 24 errors.

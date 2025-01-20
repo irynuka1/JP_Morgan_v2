@@ -53,16 +53,25 @@ public final class PrintTransactions implements Executable {
      * @param user the user for which the transactions are sorted
      */
     public void sortTransactions(final User user) {
-        for (int i = 0; i < user.getTransactionsNode().size() - 1; i++) {
-            for (int j = i + 1; j < user.getTransactionsNode().size(); j++) {
-                int timestamp1 = user.getTransactionsNode().get(i).get("timestamp").asInt();
-                int timestamp2 = user.getTransactionsNode().get(j).get("timestamp").asInt();
+        int n = user.getTransactionsNode().size();
+        boolean swapped;
 
-                if (timestamp2 < timestamp1) {
-                    ObjectNode temp = (ObjectNode) user.getTransactionsNode().get(i);
-                    user.getTransactionsNode().set(i, user.getTransactionsNode().get(j));
-                    user.getTransactionsNode().set(j, temp);
+        // Using stable bubble sort to maintain relative order of equal timestamps
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - i - 1; j++) {
+                int timestamp1 = user.getTransactionsNode().get(j).get("timestamp").asInt();
+                int timestamp2 = user.getTransactionsNode().get(j + 1).get("timestamp").asInt();
+
+                if (timestamp1 > timestamp2) {
+                    ObjectNode temp = (ObjectNode) user.getTransactionsNode().get(j);
+                    user.getTransactionsNode().set(j, user.getTransactionsNode().get(j + 1));
+                    user.getTransactionsNode().set(j + 1, temp);
+                    swapped = true;
                 }
+            }
+            if (!swapped) {
+                break;
             }
         }
     }

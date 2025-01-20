@@ -1,8 +1,10 @@
 package org.poo.e_banking.commands.payOnlineCommand;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.e_banking.AppLogic;
+import org.poo.e_banking.commands.UpgradePlan;
 import org.poo.e_banking.helpers.Commission;
 import org.poo.e_banking.helpers.ExchangeRateManager;
 import org.poo.e_banking.helpers.Executable;
@@ -87,6 +89,17 @@ public final class PayOnline implements Executable {
                         PayOnlineOutputBuilder.createCard(account, card, user,
                                 commandInput.getTimestamp()));
             }
+
+            if (user.getTransaOver300() == 5) {
+                ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+                outputNode.put("description", "Upgrade plan");
+                outputNode.put("accountIBAN", account.getIban());
+                outputNode.put("newPlanType", "gold");
+                outputNode.put("timestamp", commandInput.getTimestamp());
+                user.setPlan("gold");
+                user.getTransactionsNode().add(outputNode);
+                user.setTransaOver300(0);
+            }
         }
     }
 
@@ -101,13 +114,16 @@ public final class PayOnline implements Executable {
                               final double amountInAccountCurrency,
                               final ExchangeRateManager exchangeManager) {
         Commerciant commerciant = account.getCommerciant(commandInput.getCommerciant());
+        double exchangeToRON =
+                exchangeManager.getExchangeRate(commandInput.getCurrency(), "RON");
+        double amountInRON = commandInput.getAmount() * exchangeToRON;
+        if (amountInRON >= 300 && user.getPlan().equals("silver")) {
+            user.setTransaOver300(user.getTransaOver300() + 1);
+        }
 
         if (commerciant.getCashbackStrategy().equals("nrOfTransactions")) {
             commerciant.getCashBack(account, amountInAccountCurrency);
         } else {
-            double exchangeToRON =
-                    exchangeManager.getExchangeRate(commandInput.getCurrency(), "RON");
-            double amountInRON = commandInput.getAmount() * exchangeToRON;
             commerciant.getCashBack(amountInRON, account, user.getPlan(), amountInAccountCurrency);
         }
     }

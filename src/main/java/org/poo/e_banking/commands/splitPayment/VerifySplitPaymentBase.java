@@ -37,8 +37,9 @@ public abstract class VerifySplitPaymentBase implements Executable {
         Map<String, User> userMap = appLogic.getUserMap();
         List<Account> accounts = getParticipatingAccounts(users);
         ObjectInput objectInput = appLogic.getObjectInput();
+        ArrayList<Integer> verificationTimestamps = appLogic.getVerificationTimestamps();
 
-        int timestamp = checkResponse(objectInput, accounts, userMap);
+        int timestamp = checkResponse(objectInput, accounts, userMap, verificationTimestamps);
 
         if (timestamp == -1) {
             return;
@@ -59,47 +60,49 @@ public abstract class VerifySplitPaymentBase implements Executable {
      * @return The timestamp of the last command that was accepted.
      */
     protected int checkResponse(final ObjectInput objectInput, final List<Account> accounts,
-                                final Map<String, User> userMap) {
+                                final Map<String, User> userMap, final ArrayList<Integer> verificationTimestamps) {
         int verifiedAccounts = 0;
+        int ok = 0;
         int lastTimestamp = -1;
 
         for (int i = 0; i < objectInput.getCommands().length; i++) {
-            if (objectInput.getCommands()[i].getTimestamp() > commandInput.getTimestamp()) {
+            if (objectInput.getCommands()[i].getTimestamp() > commandInput.getTimestamp()
+                    && !verificationTimestamps.contains(objectInput.getCommands()[i].getTimestamp())) {
                 if (isRejectCommand(objectInput, i)) {
+                    verificationTimestamps.add(objectInput.getCommands()[i].getTimestamp());
+                    verifiedAccounts++;
                     User user = getUserWithError(userMap, objectInput, i, "rejectSplitPayment");
-                    if (user == null) {
-                        return -1;
-                    }
-
-                    if (isUserInvolved(user, accounts)) {
-                        addRejectionError(accounts, userMap);
-                        return -1;
-                    }
-                    return -1;
-                }
-
-                if (isAcceptCommand(objectInput, i)) {
-                    User user = getUserWithError(userMap, objectInput, i, "acceptSplitPayment");
-                    if (user == null) {
-                        return -1;
-                    }
-
-                    for (Account account : user.getAccounts()) {
-                        if (accounts.contains(account)) {
-                            verifiedAccounts++;
-                            lastTimestamp = objectInput.getCommands()[i].getTimestamp();
-                            break;
+                    if (user != null) {
+                        if (isUserInvolved(user, accounts)) {
+                            addRejectionError(accounts, userMap);
+                            continue;
                         }
                     }
                 }
+
+                if (isAcceptCommand(objectInput, i)) {
+                    verificationTimestamps.add(objectInput.getCommands()[i].getTimestamp());
+                    verifiedAccounts++;
+                    User user = getUserWithError(userMap, objectInput, i, "acceptSplitPayment");
+                    if (user != null) {
+                        if (isUserInvolved(user, accounts)) {
+                            ok++;
+                            lastTimestamp = objectInput.getCommands()[i].getTimestamp();
+                        }
+                    }
+                }
+
+                if (verifiedAccounts == accounts.size()) {
+                    break;
+                }
             }
 
-            if (verifiedAccounts == accounts.size()) {
+            if (ok == accounts.size()) {
                 return lastTimestamp;
             }
         }
 
-        return verifiedAccounts == accounts.size() ? lastTimestamp : -1;
+        return ok == accounts.size() ? lastTimestamp : -1;
     }
 
     private User getUserWithError(final Map<String, User> userMap, final ObjectInput objectInput,
@@ -113,7 +116,7 @@ public abstract class VerifySplitPaymentBase implements Executable {
             errorNode.put("description", "User not found");
             errorNode.put("timestamp", objectInput.getCommands()[index].getTimestamp());
             objectNode.put("timestamp", objectInput.getCommands()[index].getTimestamp());
-            output.add(objectNode);
+            AppLogic.getInstance().getUserNotFounds().add(objectNode);
         }
 
         return user;
@@ -130,7 +133,7 @@ public abstract class VerifySplitPaymentBase implements Executable {
             objectNode.put("description", "Split payment of "
                     + String.format("%.2f", commandInput.getAmount()) + " "
                     + commandInput.getCurrency());
-            objectNode.put("error", "One user rejected the payment");
+            objectNode.put("error", "One user rejected the payment.");
             ArrayNode accountsNode = objectNode.putArray("involvedAccounts");
             for (String account : commandInput.getAccounts()) {
                 accountsNode.add(account);
