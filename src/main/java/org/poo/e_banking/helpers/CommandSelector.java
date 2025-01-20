@@ -1,29 +1,29 @@
 package org.poo.e_banking.helpers;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.poo.e_banking.AppLogic;
+import org.poo.e_banking.commands.AddFunds;
+import org.poo.e_banking.commands.PrintUsers;
+import org.poo.e_banking.commands.SendMoney;
+import org.poo.e_banking.commands.SetMinBalance;
 import org.poo.e_banking.commands.accountAdd_Del.AddAccount;
 import org.poo.e_banking.commands.accountAdd_Del.DeleteAccount;
-import org.poo.e_banking.commands.AddFunds;
 import org.poo.e_banking.commands.cardAdd_Del.CreateCard;
 import org.poo.e_banking.commands.cardAdd_Del.DeleteCard;
 import org.poo.e_banking.commands.interestRate.AddInterestRate;
 import org.poo.e_banking.commands.interestRate.ChangeInterestRate;
 import org.poo.e_banking.commands.payOnlineCommand.PayOnline;
-import org.poo.e_banking.commands.PrintUsers;
 import org.poo.e_banking.commands.reports.Report;
 import org.poo.e_banking.commands.reports.SpendingsReport;
-import org.poo.e_banking.commands.SendMoney;
-import org.poo.e_banking.commands.SetMinBalance;
 import org.poo.e_banking.commands.splitPayment.VerifyCustomSplit;
 import org.poo.e_banking.commands.splitPayment.VerifyEqualSplit;
+import org.poo.fileio.CommandInput;
+import org.poo.e_banking.commands.AcceptRejectPayment;
+import org.poo.e_banking.commands.CheckCardStatus;
+import org.poo.e_banking.commands.CashWithdrawal;
 import org.poo.e_banking.commands.PrintTransactions;
 import org.poo.e_banking.commands.SetAlias;
-import org.poo.fileio.CommandInput;
-import org.poo.e_banking.commands.CashWithdrawal;
-import org.poo.e_banking.commands.CheckCardStatus;
-import org.poo.e_banking.commands.WithdrawSavings;
 import org.poo.e_banking.commands.UpgradePlan;
+import org.poo.e_banking.commands.WithdrawSavings;
 
 public final class CommandSelector {
     private CommandSelector() {
@@ -106,24 +106,10 @@ public final class CommandSelector {
             case "cashWithdrawal":
                 command = new CashWithdrawal(commandInput, output);
                 break;
-            case "acceptSplitPayment":
-                for (int i = 0; i < AppLogic.getInstance().getUserNotFounds().size(); i++) {
-                    if (AppLogic.getInstance().getUserNotFounds().get(i).get("timestamp").asInt() == commandInput.getTimestamp()) {
-                        output.add(AppLogic.getInstance().getUserNotFounds().get(i));
-                        break;
-                    }
-                }
-                break;
-            case "rejectSplitPayment":
-                for (int i = 0; i < AppLogic.getInstance().getUserNotFounds().size(); i++) {
-                    if (AppLogic.getInstance().getUserNotFounds().get(i).get("timestamp").asInt() == commandInput.getTimestamp()) {
-                        output.add(AppLogic.getInstance().getUserNotFounds().get(i));
-                        break;
-                    }
-                }
+            case "acceptSplitPayment", "rejectSplitPayment":
+                command = new AcceptRejectPayment(commandInput, output);
                 break;
             default:
-                System.out.println("Invalid command " + commandInput.getCommand());
                 break;
         }
 

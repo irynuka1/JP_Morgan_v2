@@ -1,6 +1,5 @@
 package org.poo.e_banking.commands.payOnlineCommand;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.poo.e_banking.AppLogic;
@@ -19,6 +18,7 @@ import java.util.Map;
 public final class PayOnline implements Executable {
     private final CommandInput commandInput;
     private final ArrayNode output;
+    private static final int MINIMUM_AMOUNT = 300;
 
     public PayOnline(final CommandInput commandInput, final ArrayNode output) {
         this.commandInput = commandInput;
@@ -90,16 +90,8 @@ public final class PayOnline implements Executable {
                                 commandInput.getTimestamp()));
             }
 
-            if (user.getTransaOver300() == 5) {
-                ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
-                outputNode.put("description", "Upgrade plan");
-                outputNode.put("accountIBAN", account.getIban());
-                outputNode.put("newPlanType", "gold");
-                outputNode.put("timestamp", commandInput.getTimestamp());
-                user.setPlan("gold");
-                user.getTransactionsNode().add(outputNode);
-                user.setTransaOver300(0);
-            }
+            UpgradePlan upgradePlan = new UpgradePlan(commandInput, output);
+            upgradePlan.freeUpgradeIfPossible(user, account);
         }
     }
 
@@ -117,8 +109,9 @@ public final class PayOnline implements Executable {
         double exchangeToRON =
                 exchangeManager.getExchangeRate(commandInput.getCurrency(), "RON");
         double amountInRON = commandInput.getAmount() * exchangeToRON;
-        if (amountInRON >= 300 && user.getPlan().equals("silver")) {
-            user.setTransaOver300(user.getTransaOver300() + 1);
+
+        if (amountInRON >= MINIMUM_AMOUNT && user.getPlan().equals("silver")) {
+            user.setTransactionsToUpgrade(user.getTransactionsToUpgrade() + 1);
         }
 
         if (commerciant.getCashbackStrategy().equals("nrOfTransactions")) {

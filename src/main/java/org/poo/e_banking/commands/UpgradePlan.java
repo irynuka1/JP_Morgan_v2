@@ -16,6 +16,7 @@ import java.util.Map;
 public final class UpgradePlan implements Executable {
     private final CommandInput commandInput;
     private final ArrayNode output;
+    private static final int NECESSARY_TRANSACTIONS = 5;
 
     public UpgradePlan(final CommandInput commandInput, final ArrayNode output) {
         this.commandInput = commandInput;
@@ -41,14 +42,11 @@ public final class UpgradePlan implements Executable {
         }
 
         if (user == null) {
-            ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
-            outputNode.put("command", "upgradePlan");
-            ObjectNode errorNode = new ObjectNode(new ObjectMapper().getNodeFactory());
-            outputNode.set("output", errorNode);
-            errorNode.put("description", "Account not found");
-            errorNode.put("timestamp", commandInput.getTimestamp());
-            outputNode.put("timestamp", commandInput.getTimestamp());
-            output.add(outputNode);
+            accountNotFoundOutput();
+            return;
+        }
+
+        if (freeUpgradeIfPossible(user, account)) {
             return;
         }
 
@@ -62,12 +60,58 @@ public final class UpgradePlan implements Executable {
                 user.setPlan(commandInput.getNewPlanType());
                 logTransaction(user, account, successOutput());
             } else {
-                ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
-                outputNode.put("description", "Insufficient funds");
-                outputNode.put("timestamp", commandInput.getTimestamp());
-                logTransaction(user, account, outputNode);
+                logTransaction(user, account, insufficientFundsOutput());
             }
         }
+    }
+
+    /**
+     * Checks if the user has made enough transactions to upgrade the plan and
+     * upgrades if so
+     * @param user the user
+     * @param account the account
+     * @return true if the user can upgrade the plan, false otherwise
+     */
+    public boolean freeUpgradeIfPossible(final User user, final Account account) {
+        if (user.getTransactionsToUpgrade() == NECESSARY_TRANSACTIONS) {
+            ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+            outputNode.put("description", "Upgrade plan");
+            outputNode.put("accountIBAN", account.getIban());
+            outputNode.put("newPlanType", "gold");
+            outputNode.put("timestamp", commandInput.getTimestamp());
+
+            user.setPlan("gold");
+            logTransaction(user, account, outputNode);
+            user.setTransactionsToUpgrade(0);
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Creates the output node for an insufficient funds error
+     * @return the output node
+     */
+    public ObjectNode insufficientFundsOutput() {
+        ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+        outputNode.put("description", "Insufficient funds");
+        outputNode.put("timestamp", commandInput.getTimestamp());
+        return outputNode;
+    }
+
+    /**
+     * Creates the output node for an account not found error
+     */
+    public void accountNotFoundOutput() {
+        ObjectNode outputNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+        outputNode.put("command", "upgradePlan");
+        ObjectNode errorNode = new ObjectNode(new ObjectMapper().getNodeFactory());
+        outputNode.set("output", errorNode);
+        errorNode.put("description", "Account not found");
+        errorNode.put("timestamp", commandInput.getTimestamp());
+        outputNode.put("timestamp", commandInput.getTimestamp());
+        output.add(outputNode);
     }
 
     /**

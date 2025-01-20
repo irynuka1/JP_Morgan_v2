@@ -29,17 +29,17 @@ public final class AppLogic {
     private static ExchangeRateManager exchangeRateManager;
     private static List<CommerciantInput> commerciants;
     private static ObjectInput objectInput;
-    private static ArrayList<Integer> verificationTimestamps;
+    private static ArrayList<Integer> verifiedTimestamps;
     private static ArrayList<ObjectNode> userNotFounds;
 
     private AppLogic() {
-        this.users = new ArrayList<>();
-        this.userMap = new HashMap<>();
-        this.exchangeRateManager = new ExchangeRateManager();
-        this.planTaxMap = new HashMap<>();
-        this.commerciants = new ArrayList<>();
-        this.verificationTimestamps = new ArrayList<>();
-        this.userNotFounds = new ArrayList<>();
+        users = new ArrayList<>();
+        userMap = new HashMap<>();
+        exchangeRateManager = new ExchangeRateManager();
+        planTaxMap = new HashMap<>();
+        commerciants = new ArrayList<>();
+        verifiedTimestamps = new ArrayList<>();
+        userNotFounds = new ArrayList<>();
     }
 
     /**
@@ -67,7 +67,7 @@ public final class AppLogic {
         users.clear();
         userMap.clear();
         planTaxMap.clear();
-        this.objectInput = input;
+        objectInput = input;
 
         for (var user : input.getUsers()) {
             users.add(new User(user.getFirstName(), user.getLastName(), user.getEmail(),
@@ -142,8 +142,8 @@ public final class AppLogic {
         return objectInput;
     }
 
-    public ArrayList<Integer> getVerificationTimestamps() {
-        return verificationTimestamps;
+    public ArrayList<Integer> getVerifiedTimestamps() {
+        return verifiedTimestamps;
     }
 
     public ArrayList<ObjectNode> getUserNotFounds() {

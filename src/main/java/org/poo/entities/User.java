@@ -23,12 +23,12 @@ public final class User implements ToOutput {
     private String birthdate;
     private String occupation;
     private String plan;
+    private int transactionsToUpgrade;
     private List<Account> accounts;
     private ObjectNode userNode;
     private ArrayNode transactionsNode;
     private Map<String, Account> accountMap = new HashMap<>();
     private List<PendingTransaction> pendingTransactions = new ArrayList<>();
-    private int transaOver300;
 
     public User(final String firstName, final String lastName, final String email,
                 final String birthdate, final String occupation) {
@@ -37,7 +37,7 @@ public final class User implements ToOutput {
         this.email = email;
         this.birthdate = birthdate;
         this.occupation = occupation;
-        this.transaOver300 = 0;
+        this.transactionsToUpgrade = 0;
         this.plan = this.occupation.equals("student") ? "student" : "standard";
         this.accounts = new ArrayList<>();
         this.userNode = new ObjectNode(new ObjectMapper().getNodeFactory());
